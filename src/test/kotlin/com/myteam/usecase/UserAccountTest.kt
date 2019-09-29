@@ -153,7 +153,7 @@ internal class UserAccountTest {
             creationDate = LocalDateTime.now(),
             licenceAmount = 0.0f,
             homeStadium = Stadium("name", Adress("", "", "")),
-            coach = Coach()
+            coach = Coach("mail", "firstName", "lastName", LocalDate.now(), "phone", emptyList())
         )
     }
 

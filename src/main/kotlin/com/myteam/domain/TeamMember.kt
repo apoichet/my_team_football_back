@@ -1,9 +1,16 @@
 package com.myteam.domain
 
+import java.time.LocalDate
 import java.time.LocalDateTime
 
 
 abstract class TeamMember(
+    mail: String,
+    firstName: String,
+    lastName: String,
+    birthdate: LocalDate,
+    phone: String,
+    adress: List<Adress>,
     creationDate: LocalDateTime,
     bestQuality: String = "",
     worstDefault: String = "",
@@ -11,6 +18,12 @@ abstract class TeamMember(
 )
 
 data class Player (
+    val mail: String,
+    val firstName: String,
+    val lastName: String,
+    val birthdate: LocalDate,
+    val phone: String,
+    val adress: List<Adress>,
     val creationDate: LocalDateTime = LocalDateTime.now(),
     var bestQuality: String = "",
     var worstDefault: String = "",
@@ -20,7 +33,18 @@ data class Player (
     var height: Int = 0,
     var originalPosition: PlayerPosition,
     var positions: List<PlayerPosition>
-): TeamMember(creationDate, bestQuality, worstDefault, verbatim)
+): TeamMember(
+    mail,
+    firstName,
+    lastName,
+    birthdate,
+    phone,
+    adress,
+    creationDate,
+    bestQuality,
+    worstDefault,
+    verbatim
+)
 
 enum class PlayerPosition(val position: String) {
     GK("Goal Keeper")
@@ -31,11 +55,28 @@ enum class PlayerFoot {
 }
 
 data class Coach (
+    val mail: String,
+    val firstName: String,
+    val lastName: String,
+    val birthdate: LocalDate,
+    val phone: String,
+    val adress: List<Adress>,
     val creationDate: LocalDateTime = LocalDateTime.now(),
     var bestQuality: String = "",
     var worstDefault: String = "",
     var verbatim: String = ""
-): TeamMember(creationDate, bestQuality, worstDefault, verbatim)
+): TeamMember(
+    mail,
+    firstName,
+    lastName,
+    birthdate,
+    phone,
+    adress,
+    creationDate,
+    bestQuality,
+    worstDefault,
+    verbatim
+)
 
 
 class Adress(val adress: String, val city: String, val zipCode: String, val country: String = "France")
