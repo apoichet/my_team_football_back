@@ -3,6 +3,7 @@ package com.myteam.usecase
 import com.myteam.domain.*
 import com.myteam.exception.UserAccountUnknown
 import com.myteam.exception.UserMailAlreadyExist
+import com.myteam.port.TeamMemberRepository
 import com.myteam.port.UserRepository
 import com.nhaarman.mockitokotlin2.*
 import org.junit.jupiter.api.Assertions.*
@@ -15,12 +16,14 @@ import java.time.LocalDateTime
 internal class UserAccountTest {
 
     private lateinit var mockRepository: UserRepository
+    private lateinit var mockTeamMember: TeamMemberRepository
     private lateinit var sut: UserAccount
 
     @BeforeEach
     fun setUp() {
         mockRepository = mock()
-        sut = UserAccount(mockRepository)
+        mockTeamMember = mock()
+        sut = UserAccount(mockRepository, mockTeamMember)
     }
 
     @Test
@@ -127,6 +130,30 @@ internal class UserAccountTest {
     }
 
     @Test
+    fun `should modify team members information when modify user`() {
+        //Given
+        val userModify = buildUser("1", "new_mail", "password")
+        val userFound = buildUser("1", "mail", "password")
+        val team = buildTeam()
+        team.players = listOf(buildPlayer("mail"))
+        team.coach = buildCoach("mail")
+        userModify.teams = listOf(team)
+        userFound.teams = listOf(team)
+        //When
+        whenever(mockRepository.find("1")).thenReturn(userFound)
+        whenever(mockTeamMember.update(team.players.first())).thenReturn(team.players.first())
+        whenever(mockTeamMember.update(team.coach)).thenReturn(team.coach)
+        whenever(mockRepository.update(userModify)).thenReturn(userModify)
+        val userReturn = sut.modify(userModify)
+        //Then
+        verify(mockRepository).update(userModify)
+        verify(mockTeamMember).update(team.players.first())
+        verify(mockTeamMember).update(team.coach)
+        assertEquals(userReturn?.teams?.first()?.coach?.mail, "new_mail")
+        assertEquals(userReturn?.teams?.first()?.players?.first()?.mail, "new_mail")
+    }
+
+    @Test
     fun `should reject when modify user unknown`() {
         //Given
         val existingUser = buildUser("1", "mail", "password")
@@ -147,7 +174,7 @@ internal class UserAccountTest {
             birthdate = LocalDate.now(),
             phone = "",
             adress = emptyList()
-            )
+        )
     }
 
     private fun buildTeam(): Team {
@@ -157,6 +184,32 @@ internal class UserAccountTest {
             homeStadium = Stadium("name", Adress("", "", "")),
             coach = Coach("mail", "firstName", "lastName", LocalDate.now(), "phone", emptyList())
         )
+    }
+
+
+    private fun buildPlayer(mail : String): Player {
+        return Player(mail = mail,
+            firstName = "firstName",
+            lastName = "lastName",
+            birthdate = LocalDate.now(),
+            phone = "phone",
+            adress = emptyList(),
+            strongFoot = PlayerFoot.BOTH,
+            positions = emptyList(),
+            originalPosition = PlayerPosition.GK
+        )
+
+    }
+
+    private fun buildCoach(mail: String): Coach {
+        return Coach(mail = mail,
+            firstName = "firstName",
+            lastName = "lastName",
+            birthdate = LocalDate.now(),
+            phone = "phone",
+            adress = emptyList()
+        )
+
     }
 
 }
