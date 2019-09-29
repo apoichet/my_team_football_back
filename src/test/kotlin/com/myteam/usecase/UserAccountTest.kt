@@ -26,21 +26,23 @@ internal class UserAccountTest {
     @Test
     fun `should create new valid user account`() {
         //Given
-        val user = buildUser(0, "pseudo", "password")
-        val userSaved = buildUser(1, "pseudo", "password")
+        val user = buildUser("0", "mail", "password")
+        val userSaved = buildUser("1", "mail", "password")
         //When
+        whenever(mockRepository.findBy("mail")).thenReturn(null)
         whenever(mockRepository.create(user)).thenReturn(userSaved)
         val userExpected = sut.create(user)
         //Then
-        verify(mockRepository).create(any())
+        verify(mockRepository).findBy("mail")
+        verify(mockRepository).create(user)
         assertEquals(userSaved, userExpected)
     }
 
     @Test
-    fun `should reject creation when user login already exists`() {
+    fun `should reject creation when user mail already exists`() {
         //When
-        val userAlreadyExists = buildUser(1, "MAIL_ALREADY_EXISTS", "password")
-        whenever(mockRepository.find("MAIL_ALREADY_EXISTS")).thenReturn(userAlreadyExists)
+        val userAlreadyExists = buildUser("1", "MAIL_ALREADY_EXISTS", "password")
+        whenever(mockRepository.findBy("MAIL_ALREADY_EXISTS")).thenReturn(userAlreadyExists)
         //Then
         assertThrows<UserMailAlreadyExist> {
             sut.create(userAlreadyExists)
@@ -50,48 +52,48 @@ internal class UserAccountTest {
     @Test
     fun `should log existing user`() {
         //Given
-        val user = buildUser(1, "mail", "password")
+        val user = buildUser("1", "mail", "password")
         user.teams = listOf(buildTeam())
         //When
-        whenever(mockRepository.find("mail")).thenReturn(user)
+        whenever(mockRepository.findBy("mail")).thenReturn(user)
         val userExpected = sut.login("mail", "password")
         //Then
-        verify(mockRepository).find("mail")
+        verify(mockRepository).findBy("mail")
         assertEquals(user, userExpected)
     }
 
     @Test
     fun `should not log unknown login`() {
         //When
-        whenever(mockRepository.find("mail")).thenReturn(null)
+        whenever(mockRepository.findBy("mail")).thenReturn(null)
         val userExpected = sut.login("mail", "password")
         //Then
-        verify(mockRepository).find("mail")
+        verify(mockRepository).findBy("mail")
         assertNull(userExpected)
     }
 
     @Test
     fun `should not log unknown password`() {
         //Given
-        val user = buildUser(1, "mail", "password")
+        val user = buildUser("1", "mail", "password")
         //When
-        whenever(mockRepository.find("mail")).thenReturn(user)
+        whenever(mockRepository.findBy("mail")).thenReturn(user)
         val userExpected = sut.login("mail", "other_password")
         //Then
-        verify(mockRepository).find("mail")
+        verify(mockRepository).findBy("mail")
         assertNull(userExpected)
     }
 
     @Test
     fun `should close existing account`() {
         //Given
-        val existingUser = buildUser(1, "mail", "password")
+        val existingUser = buildUser("1", "mail", "password")
         //When
-        whenever(mockRepository.find("mail")).thenReturn(existingUser)
+        whenever(mockRepository.find("1")).thenReturn(existingUser)
         whenever(mockRepository.delete(existingUser)).thenReturn(true)
         val responseClose = sut.close(existingUser)
         //Then
-        verify(mockRepository).find("mail")
+        verify(mockRepository).find("1")
         verify(mockRepository).delete(existingUser)
         assertTrue(responseClose)
     }
@@ -99,12 +101,12 @@ internal class UserAccountTest {
     @Test
     fun `should close account unknown`() {
         //Given
-        val existingUser = buildUser(1, "mail", "password")
+        val existingUser = buildUser("1", "mail", "password")
         //When
-        whenever(mockRepository.find("mail")).thenReturn(null)
+        whenever(mockRepository.find("1")).thenReturn(null)
         val responseClose = sut.close(existingUser)
         //Then
-        verify(mockRepository).find("mail")
+        verify(mockRepository).find("1")
         verify(mockRepository, never()).delete(existingUser)
         assertTrue(responseClose)
     }
@@ -112,14 +114,14 @@ internal class UserAccountTest {
     @Test
     fun `should let modify user`() {
         //Given
-        val existingUser = buildUser(1, "mail", "password")
-        val userModified = buildUser(1, "mail", "new_password")
+        val existingUser = buildUser("1", "mail", "password")
+        val userModified = buildUser("1", "mail", "new_password")
         //When
-        whenever(mockRepository.find("mail")).thenReturn(existingUser)
+        whenever(mockRepository.find("1")).thenReturn(existingUser)
         whenever(mockRepository.update(existingUser)).thenReturn(userModified)
         val userReturn = sut.modify(existingUser)
         //Then
-        verify(mockRepository).find("mail")
+        verify(mockRepository).find("1")
         verify(mockRepository).update(existingUser)
         assertEquals(userModified, userReturn)
     }
@@ -127,16 +129,16 @@ internal class UserAccountTest {
     @Test
     fun `should reject when modify user unknown`() {
         //Given
-        val existingUser = buildUser(1, "mail", "password")
+        val existingUser = buildUser("1", "mail", "password")
         //When
-        whenever(mockRepository.find("mail")).thenReturn(null)
+        whenever(mockRepository.find("1")).thenReturn(null)
         //Then
         assertThrows<UserAccountUnknown> { sut.modify(existingUser) }
-        verify(mockRepository).find("mail")
+        verify(mockRepository).find("1")
         verify(mockRepository, never()).update(existingUser)
     }
 
-    private fun buildUser(id: Int, mail: String, password: String): User {
+    private fun buildUser(id: String, mail: String, password: String): User {
         return User(id = id,
             mail = mail,
             password = password,
