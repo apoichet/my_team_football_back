@@ -1,4 +1,4 @@
-package domain
+package com.myteam.domain
 
 import java.time.LocalDateTime
 
@@ -24,8 +24,8 @@ data class PlayerGame(
     var redCard: Int,
     var minuteReferee: Int,
     var positions: List<PlayerPosition>,
-    var coachMark: Int,
-    var teamMark: Int
+    var coachRate: Int,
+    var teamRate: Int
 )
 
 enum class GameConclusion {
