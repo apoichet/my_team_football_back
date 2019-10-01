@@ -3,6 +3,7 @@ package com.myteam.domain
 import java.time.LocalDateTime
 
 data class Team(
+    var token: String,
     var creationDate: LocalDateTime,
     var name: String,
     var logo: String? = null,

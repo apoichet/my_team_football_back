@@ -1,6 +1,6 @@
 package com.myteam.exception
 
-abstract class UserException(val msg: String): Throwable()
+abstract class UserException(msg: String) : Throwable()
 
 class UserMailAlreadyExist(msg: String) : UserException(msg)
 
