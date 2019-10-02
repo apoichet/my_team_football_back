@@ -1,9 +1,11 @@
 package com.myteam.usecase
 
+import com.myteam.domain.Player
 import com.myteam.domain.Team
 import com.myteam.domain.TeamMember
 import com.myteam.domain.User
 import com.myteam.exception.TeamAlreadyExists
+import com.myteam.exception.TeamNotExists
 import com.myteam.exception.UserMailAlreadyExist
 import com.myteam.exception.UserAccountUnknown
 import com.myteam.port.TeamMemberRepository
@@ -58,6 +60,14 @@ class UserAccount(private val userRepository: UserRepository,
             throw TeamAlreadyExists("User ${user.lastName} ${user.firstName} has already created a team with name ${newTeam.name}")
         }
         return teamRepositoy.create(newTeam)
+    }
+
+    fun joinTeam(player: Player, team: Team): Team {
+        findTeam(team.token)?.let {
+            it.players = it.players.plus(player)
+            return teamRepositoy.update(it)
+        }
+        throw TeamNotExists("Team with name ${team.name} does not exist")
     }
 
     private fun updateTeamMembers(oldUser: User, newUser: User) {

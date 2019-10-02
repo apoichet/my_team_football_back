@@ -2,6 +2,7 @@ package com.myteam.usecase
 
 import com.myteam.domain.*
 import com.myteam.exception.TeamAlreadyExists
+import com.myteam.exception.TeamNotExists
 import com.myteam.exception.UserAccountUnknown
 import com.myteam.exception.UserMailAlreadyExist
 import com.myteam.port.TeamMemberRepository
@@ -217,6 +218,38 @@ internal class UserAccountTest {
         assertThrows<TeamAlreadyExists> {
             sut.createTeam(user, newTeam)
         }
+    }
+
+    @Test
+    fun `should join existing team`() {
+        //Given
+        val team = buildTeam("token")
+        val player = buildPlayer("mail")
+        val teamWithNewPlayer = buildTeam("token")
+        teamWithNewPlayer.players = listOf(player)
+        //When
+        whenever(mockTeamRepo.find(team.token)).thenReturn(team)
+        whenever(mockTeamRepo.update(team)).thenReturn(teamWithNewPlayer)
+        val teamReturn = sut.joinTeam(player, team)
+        //Then
+        verify(mockTeamRepo).find(team.token)
+        verify(mockTeamRepo).update(team)
+        assertTrue(teamReturn.players.contains(player))
+
+    }
+
+    @Test
+    fun `should reject when join unknown team`() {
+        //Given
+        val team = buildTeam("token")
+        val player = buildPlayer("mail")
+        //When
+        whenever(mockTeamRepo.find(team.token)).thenReturn(null)
+        assertThrows<TeamNotExists> {
+            verify(mockTeamRepo, never()).update(team)
+            sut.joinTeam(player, team)
+        }
+
     }
 
     private fun buildUser(id: String, mail: String, password: String): User {
