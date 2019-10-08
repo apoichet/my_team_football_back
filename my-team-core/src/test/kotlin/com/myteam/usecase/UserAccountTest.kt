@@ -141,19 +141,21 @@ internal class UserAccountTest {
         val userFound = buildUser("1", "mail", "password")
         val team = buildTeam("1")
         team.players = listOf(buildPlayer("mail"))
-        team.coach = buildCoach("mail")
+        team.president = buildTeamMember("mail")
+        team.coach = buildTeamMember("mail")
         userModify.teams = listOf(team)
         userFound.teams = listOf(team)
         //When
         whenever(mockUserRepo.find("1")).thenReturn(userFound)
         whenever(mockTeamMemberRepo.update(team.players.first())).thenReturn(team.players.first())
-        whenever(mockTeamMemberRepo.update(team.coach)).thenReturn(team.coach)
+        whenever(mockTeamMemberRepo.update(team.president)).thenReturn(team.coach)
         whenever(mockUserRepo.update(userModify)).thenReturn(userModify)
         val userReturn = sut.modifyProfile(userModify)
         //Then
         verify(mockUserRepo).update(userModify)
         verify(mockTeamMemberRepo).update(team.players.first())
-        verify(mockTeamMemberRepo).update(team.coach)
+        verify(mockTeamMemberRepo).update(team.president)
+        assertEquals(userReturn?.teams?.first()?.president?.mail, "new_mail")
         assertEquals(userReturn?.teams?.first()?.coach?.mail, "new_mail")
         assertEquals(userReturn?.teams?.first()?.players?.first()?.mail, "new_mail")
     }
@@ -270,7 +272,7 @@ internal class UserAccountTest {
             creationDate = LocalDateTime.now(),
             licenceAmount = 0.0f,
             homeStadium = Stadium("name", Adress("", "", "")),
-            coach = Coach("mail", "firstName", "lastName", LocalDate.now(), "phone", emptyList())
+            president = buildTeamMember("mail")
         )
     }
 
@@ -289,13 +291,14 @@ internal class UserAccountTest {
 
     }
 
-    private fun buildCoach(mail: String): Coach {
-        return Coach(mail = mail,
+    private fun buildTeamMember(mail: String): TeamMember {
+        return TeamMember(mail = mail,
             firstName = "firstName",
             lastName = "lastName",
             birthdate = LocalDate.now(),
             phone = "phone",
-            adress = emptyList()
+            adress = emptyList(),
+            creationDate = LocalDateTime.now()
         )
 
     }

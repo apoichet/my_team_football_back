@@ -2,7 +2,7 @@ package com.myteam.domain
 
 import java.time.LocalDateTime
 
-data class Game(
+class Game(
     val nameOpponent: String,
     val type: GameType,
     var place: GamePlace,
@@ -14,7 +14,7 @@ data class Game(
     var gamePlayers: List<PlayerGame>
 )
 
-data class PlayerGame(
+class PlayerGame(
     val player: Player,
     var state: PlayerState,
     var arriving: LocalDateTime,

@@ -73,28 +73,39 @@ class UserAccount(private val userRepository: UserRepository,
     private fun updateTeamMembers(oldUser: User, newUser: User) {
         oldUser.teams
             .forEach { team ->
-                team.players.filter { player ->
-                    player.mail == oldUser.mail
-                }.forEach { p ->
-                    updateTeamMember(newUser, p)
+                updatePlayers(team, oldUser, newUser)
+                if(team.president.mail == oldUser.mail) {
+                    updateTeamMember(newUser, team.president)
                 }
-            }
-        oldUser.teams
-            .filter { team ->
-                team.coach.mail == oldUser.mail
-            }.forEach { team ->
-                updateTeamMember(newUser, team.coach)
+                if(team.coach?.mail == oldUser.mail) {
+                    updateTeamMember(newUser, team.coach)
+                }
             }
     }
 
-    private fun updateTeamMember(user: User, teamMember: TeamMember) {
-        teamMember.mail = user.mail
-        teamMember.firstName = user.firstName
-        teamMember.lastName = user.lastName
-        teamMember.phone = user.phone
-        teamMember.adress = user.adress
-        teamMember.birthdate = user.birthdate
-        teamMemberRepository.update(teamMember)
+    private fun updatePlayers(
+        team: Team,
+        oldUser: User,
+        newUser: User
+    ) {
+        team.players.filter { player ->
+            player.mail == oldUser.mail
+        }.forEach { p ->
+            updateTeamMember(newUser, p)
+        }
+    }
+
+    private fun updateTeamMember(user: User, teamMember: TeamMember?) {
+        teamMember?.let {
+            it.mail = user.mail
+            it.firstName = user.firstName
+            it.lastName = user.lastName
+            it.phone = user.phone
+            it.adress = user.adress
+            it.birthdate = user.birthdate
+            teamMemberRepository.update(it)
+        }
+
     }
 
 }

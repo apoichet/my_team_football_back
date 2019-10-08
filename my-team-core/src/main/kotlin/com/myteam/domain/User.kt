@@ -3,7 +3,7 @@ package com.myteam.domain
 import java.time.LocalDate
 import java.time.LocalDateTime
 
-data class User(
+class User(
     val id: String = "",
     var mail: String,
     var password: String,

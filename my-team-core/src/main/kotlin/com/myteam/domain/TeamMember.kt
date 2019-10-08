@@ -4,7 +4,7 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 
 
-abstract class TeamMember(
+open class TeamMember(
     open var mail: String,
     open var firstName: String,
     open var lastName: String,
@@ -17,7 +17,7 @@ abstract class TeamMember(
     open var verbatim: String = ""
 )
 
-data class Player (
+class Player (
     override var mail: String,
     override var firstName: String,
     override var lastName: String,
@@ -53,30 +53,6 @@ enum class PlayerPosition(val position: String) {
 enum class PlayerFoot {
     LEFT, RIGHT, BOTH
 }
-
-data class Coach (
-    override var mail: String,
-    override var firstName: String,
-    override var lastName: String,
-    override var birthdate: LocalDate,
-    override var phone: String,
-    override var adress: List<Adress>,
-    override var creationDate: LocalDateTime = LocalDateTime.now(),
-    override var bestQuality: String = "",
-    override var worstDefault: String = "",
-    override var verbatim: String = ""
-): TeamMember(
-    mail,
-    firstName,
-    lastName,
-    birthdate,
-    phone,
-    adress,
-    creationDate,
-    bestQuality,
-    worstDefault,
-    verbatim
-)
 
 
 class Adress(val adress: String, val city: String, val zipCode: String, val country: String = "France")
