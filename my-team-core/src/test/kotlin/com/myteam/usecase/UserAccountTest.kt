@@ -8,12 +8,14 @@ import com.myteam.exception.UserMailAlreadyExist
 import com.myteam.port.TeamMemberRepository
 import com.myteam.port.TeamRepository
 import com.myteam.port.UserRepository
-import com.nhaarman.mockitokotlin2.*
+import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.never
+import com.nhaarman.mockitokotlin2.verify
+import com.nhaarman.mockitokotlin2.whenever
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import java.time.LocalDate
 import java.time.LocalDateTime
 
 internal class UserAccountTest {
@@ -155,9 +157,9 @@ internal class UserAccountTest {
         verify(mockUserRepo).update(userModify)
         verify(mockTeamMemberRepo).update(team.players.first())
         verify(mockTeamMemberRepo).update(team.president)
-        assertEquals(userReturn?.teams?.first()?.president?.mail, "new_mail")
-        assertEquals(userReturn?.teams?.first()?.coach?.mail, "new_mail")
-        assertEquals(userReturn?.teams?.first()?.players?.first()?.mail, "new_mail")
+        assertEquals(userReturn?.teams?.first()?.president?.contact?.mail, "new_mail")
+        assertEquals(userReturn?.teams?.first()?.coach?.contact?.mail, "new_mail")
+        assertEquals(userReturn?.teams?.first()?.players?.first()?.contact?.mail, "new_mail")
     }
 
     @Test
@@ -254,15 +256,14 @@ internal class UserAccountTest {
 
     }
 
+    private fun buildContact(mail: String): Contact {
+        return Contact(mail, "firtsname", "lastname")
+    }
+
     private fun buildUser(id: String, mail: String, password: String): User {
         return User(id = id,
-            mail = mail,
-            password = password,
-            firstName = "firstname",
-            lastName = "lastname",
-            birthdate = LocalDate.now(),
-            phone = "",
-            adress = emptyList()
+            contact = buildContact(mail),
+            password = password
         )
     }
 
@@ -278,12 +279,7 @@ internal class UserAccountTest {
 
 
     private fun buildPlayer(mail : String): Player {
-        return Player(mail = mail,
-            firstName = "firstName",
-            lastName = "lastName",
-            birthdate = LocalDate.now(),
-            phone = "phone",
-            adress = emptyList(),
+        return Player(contact = buildContact(mail),
             strongFoot = PlayerFoot.BOTH,
             positions = emptyList(),
             originalPosition = PlayerPosition.GK
@@ -292,14 +288,7 @@ internal class UserAccountTest {
     }
 
     private fun buildTeamMember(mail: String): TeamMember {
-        return TeamMember(mail = mail,
-            firstName = "firstName",
-            lastName = "lastName",
-            birthdate = LocalDate.now(),
-            phone = "phone",
-            adress = emptyList(),
-            creationDate = LocalDateTime.now()
-        )
+        return TeamMember(contact = buildContact(mail))
 
     }
 
