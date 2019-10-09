@@ -17,6 +17,7 @@ allprojects {
 
     dependencies {
         implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+        testImplementation "com.github.xapn:test-as-you-think-core:0.8-m1"
         testImplementation("org.junit.jupiter:junit-jupiter:5.5.2")
         testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
         compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
