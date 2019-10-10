@@ -5,7 +5,6 @@ import com.myteam.exception.TeamAlreadyExists
 import com.myteam.exception.TeamNotExists
 import com.myteam.exception.UserAccountUnknown
 import com.myteam.exception.UserMailAlreadyExist
-import com.myteam.repository.TeamMemberRepository
 import com.myteam.repository.TeamRepository
 import com.myteam.repository.UserRepository
 import com.nhaarman.mockitokotlin2.mock
@@ -22,15 +21,13 @@ internal class UserAccountTest {
 
     private lateinit var mockUserRepo: UserRepository
     private lateinit var mockTeamRepo: TeamRepository
-    private lateinit var mockTeamMemberRepo: TeamMemberRepository
     private lateinit var sut: UserAccount
 
     @BeforeEach
     fun setUp() {
         mockUserRepo = mock()
-        mockTeamMemberRepo = mock()
         mockTeamRepo = mock()
-        sut = UserAccount(mockUserRepo, mockTeamRepo, mockTeamMemberRepo)
+        sut = UserAccount(mockUserRepo, mockTeamRepo)
     }
 
     @Test
@@ -109,7 +106,7 @@ internal class UserAccountTest {
     }
 
     @Test
-    fun `should close account unknown`() {
+    fun `should close unknown account`() {
         //Given
         val existingUser = buildUser("1", "mail", "password")
         //When
@@ -122,56 +119,46 @@ internal class UserAccountTest {
     }
 
     @Test
-    fun `should let modify user`() {
+    fun `should let modify user contact`() {
         //Given
         val existingUser = buildUser("1", "mail", "password")
-        val userModified = buildUser("1", "mail", "new_password")
+        val contactModified = buildContact("new_mail")
         //When
         whenever(mockUserRepo.find("1")).thenReturn(existingUser)
-        whenever(mockUserRepo.update(existingUser)).thenReturn(userModified)
-        val userReturn = sut.modifyProfile(existingUser)
+        whenever(mockUserRepo.update(existingUser)).thenReturn(existingUser)
+        val userReturn = sut.modifyContact(existingUser, contactModified)
         //Then
         verify(mockUserRepo).find("1")
         verify(mockUserRepo).update(existingUser)
-        assertEquals(userModified, userReturn)
+        assertEquals(contactModified, userReturn?.contact)
     }
 
     @Test
-    fun `should modify team members information when modify user`() {
-        //Given
-        val userModify = buildUser("1", "new_mail", "password")
-        val userFound = buildUser("1", "mail", "password")
-        val team = buildTeam("1")
-        team.players = listOf(buildPlayer("mail"))
-        team.president = buildTeamMember("mail")
-        team.coach = buildTeamMember("mail")
-        userModify.teams = listOf(team)
-        userFound.teams = listOf(team)
-        //When
-        whenever(mockUserRepo.find("1")).thenReturn(userFound)
-        whenever(mockTeamMemberRepo.update(team.players.first())).thenReturn(team.players.first())
-        whenever(mockTeamMemberRepo.update(team.president)).thenReturn(team.coach)
-        whenever(mockUserRepo.update(userModify)).thenReturn(userModify)
-        val userReturn = sut.modifyProfile(userModify)
-        //Then
-        verify(mockUserRepo).update(userModify)
-        verify(mockTeamMemberRepo).update(team.players.first())
-        verify(mockTeamMemberRepo).update(team.president)
-        assertEquals(userReturn?.teams?.first()?.president?.contact?.mail, "new_mail")
-        assertEquals(userReturn?.teams?.first()?.coach?.contact?.mail, "new_mail")
-        assertEquals(userReturn?.teams?.first()?.players?.first()?.contact?.mail, "new_mail")
-    }
-
-    @Test
-    fun `should reject when modify user unknown`() {
+    fun `should let modify user password`() {
         //Given
         val existingUser = buildUser("1", "mail", "password")
+        val newPassword = "new_password"
+        //When
+        whenever(mockUserRepo.find("1")).thenReturn(existingUser)
+        whenever(mockUserRepo.update(existingUser)).thenReturn(existingUser)
+        val userReturn = sut.modifyPassword(existingUser, newPassword)
+        //Then
+        verify(mockUserRepo).find("1")
+        verify(mockUserRepo).update(existingUser)
+        assertEquals(newPassword, userReturn?.password)
+    }
+
+    @Test
+    fun `should reject when modify unknown user`() {
+        //Given
+        val unknownUser = buildUser("1", "mail", "password")
+        val contactModified = buildContact("new_mail")
         //When
         whenever(mockUserRepo.find("1")).thenReturn(null)
         //Then
-        assertThrows<UserAccountUnknown> { sut.modifyProfile(existingUser) }
+        assertThrows<UserAccountUnknown> { sut.modifyContact(unknownUser, contactModified) }
         verify(mockUserRepo).find("1")
-        verify(mockUserRepo, never()).update(existingUser)
+        verify(mockUserRepo, never()).update(unknownUser)
     }
 
     @Test
@@ -276,7 +263,6 @@ internal class UserAccountTest {
             president = buildTeamMember("mail")
         )
     }
-
 
     private fun buildPlayer(mail : String): Player {
         return Player(contact = buildContact(mail),

@@ -1,9 +1,6 @@
 package com.myteam.usecase
 
-import com.myteam.domain.Player
-import com.myteam.domain.Team
-import com.myteam.domain.TeamMember
-import com.myteam.domain.User
+import com.myteam.domain.*
 import com.myteam.exception.TeamAlreadyExists
 import com.myteam.exception.TeamNotExists
 import com.myteam.exception.UserMailAlreadyExist
@@ -13,8 +10,7 @@ import com.myteam.repository.TeamRepository
 import com.myteam.repository.UserRepository
 
 class UserAccount(private val userRepository: UserRepository,
-                  private val teamRepositoy: TeamRepository,
-                  private val teamMemberRepository: TeamMemberRepository) {
+                  private val teamRepositoy: TeamRepository) {
 
     fun createAccount(newUser: User): User {
         userRepository.findBy(newUser.contact.mail)?.let {
@@ -38,14 +34,22 @@ class UserAccount(private val userRepository: UserRepository,
         return true
     }
 
-    fun modifyProfile(newUser: User): User? {
-        userRepository.find(newUser.id)?.let { userFound ->
-            //Update team members informations
-            updateTeamMembers(userFound, newUser)
-            newUser.teams = userFound.teams
-            return userRepository.update(newUser)
+    fun modifyContact(user: User, newContact: Contact): User? {
+        userRepository.find(user.id)?.let { userFound ->
+            //Update user contact
+            userFound.contact = newContact
+            return userRepository.update(userFound)
         }
-        throw UserAccountUnknown("User account with mail ${newUser.contact.mail} not exists")
+        throw UserAccountUnknown("User account with mail ${user.contact.mail} not exists")
+    }
+
+    fun modifyPassword(user: User, password: String): User? {
+        userRepository.find(user.id)?.let { userFound ->
+            //Update user contact
+            userFound.password = password
+            return userRepository.update(userFound)
+        }
+        throw UserAccountUnknown("User account with mail ${user.contact.mail} not exists")
     }
 
     fun findTeam(token: String): Team? {
@@ -68,44 +72,6 @@ class UserAccount(private val userRepository: UserRepository,
             return teamRepositoy.update(it)
         }
         throw TeamNotExists("Team with name ${team.name} does not exist")
-    }
-
-    private fun updateTeamMembers(oldUser: User, newUser: User) {
-        oldUser.teams
-            .forEach { team ->
-                updatePlayers(team, oldUser, newUser)
-                if(team.president.contact.mail == oldUser.contact.mail) {
-                    updateTeamMember(newUser, team.president)
-                }
-                if(team.coach?.contact?.mail == oldUser.contact.mail) {
-                    updateTeamMember(newUser, team.coach)
-                }
-            }
-    }
-
-    private fun updatePlayers(
-        team: Team,
-        oldUser: User,
-        newUser: User
-    ) {
-        team.players.filter { player ->
-            player.contact.mail == oldUser.contact.mail
-        }.forEach { p ->
-            updateTeamMember(newUser, p)
-        }
-    }
-
-    private fun updateTeamMember(user: User, teamMember: TeamMember?) {
-        teamMember?.let {
-            it.contact.mail = user.contact.mail
-            it.contact.firstName = user.contact.firstName
-            it.contact.lastName = user.contact.lastName
-            it.contact.phone = user.contact.phone
-            it.contact.adress = user.contact.adress
-            it.contact.birthdate = user.contact.birthdate
-            teamMemberRepository.update(it)
-        }
-
     }
 
 }
