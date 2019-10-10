@@ -5,9 +5,9 @@ import com.myteam.exception.TeamAlreadyExists
 import com.myteam.exception.TeamNotExists
 import com.myteam.exception.UserAccountUnknown
 import com.myteam.exception.UserMailAlreadyExist
-import com.myteam.port.TeamMemberRepository
-import com.myteam.port.TeamRepository
-import com.myteam.port.UserRepository
+import com.myteam.repository.TeamMemberRepository
+import com.myteam.repository.TeamRepository
+import com.myteam.repository.UserRepository
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.never
 import com.nhaarman.mockitokotlin2.verify

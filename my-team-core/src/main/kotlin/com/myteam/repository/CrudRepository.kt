@@ -1,4 +1,4 @@
-package com.myteam.port
+package com.myteam.repository
 
 interface CrudRepository<O> {
 

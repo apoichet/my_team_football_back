@@ -8,9 +8,9 @@ import com.myteam.exception.TeamAlreadyExists
 import com.myteam.exception.TeamNotExists
 import com.myteam.exception.UserMailAlreadyExist
 import com.myteam.exception.UserAccountUnknown
-import com.myteam.port.TeamMemberRepository
-import com.myteam.port.TeamRepository
-import com.myteam.port.UserRepository
+import com.myteam.repository.TeamMemberRepository
+import com.myteam.repository.TeamRepository
+import com.myteam.repository.UserRepository
 
 class UserAccount(private val userRepository: UserRepository,
                   private val teamRepositoy: TeamRepository,
