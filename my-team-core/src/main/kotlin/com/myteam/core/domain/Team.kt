@@ -1,16 +1,15 @@
-package com.myteam.domain
+package com.myteam.core.domain
 
-import com.myteam.enums.PaymentType
 import java.time.LocalDateTime
 
 class Team(
-    var token: String,
-    var creationDate: LocalDateTime,
+    var token: String = "",
+    val creationDate: LocalDateTime = LocalDateTime.now(),
     var name: String,
     var logo: String? = null,
     var colors: List<String> = emptyList(),
     var pictures: List<String> = emptyList(),
-    var licenceAmount: Float,
+    var licenceAmount: Float = 0F,
     var homeStadium: Stadium,
     var president: TeamMember,
     var coach: TeamMember? = null,

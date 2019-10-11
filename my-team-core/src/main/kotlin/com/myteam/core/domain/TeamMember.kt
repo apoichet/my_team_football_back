@@ -1,8 +1,8 @@
-package com.myteam.domain
+package com.myteam.core.domain
 
-import com.myteam.enums.PaymentType
-import com.myteam.enums.PlayerFoot
-import com.myteam.enums.PlayerPosition
+import com.myteam.core.enums.PaymentType
+import com.myteam.core.enums.PlayerFoot
+import com.myteam.core.enums.PlayerPosition
 import java.time.LocalDateTime
 
 open class TeamMember(
@@ -23,8 +23,8 @@ class Player (
     var weight: Int = 0,
     var height: Int = 0,
     var originalPosition: PlayerPosition,
-    var positions: List<PlayerPosition>,
-    var playerContributions: List<PlayerContribution> = emptyList()
+    var positions: List<PlayerPosition> = emptyList(),
+    var contributions: List<PlayerContribution> = emptyList()
 ): TeamMember(
     contact,
     creationDate,
@@ -33,6 +33,7 @@ class Player (
     verbatim
 )
 
-class PlayerContribution(val player: Player, val amount: Float, var paymentType: PaymentType)
+class PlayerContribution(val amount: Float,
+                         var paymentType: PaymentType)
 
 

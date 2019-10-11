@@ -1,4 +1,4 @@
-package com.myteam.enums
+package com.myteam.core.enums
 
 enum class GamePlace {
     HOME,

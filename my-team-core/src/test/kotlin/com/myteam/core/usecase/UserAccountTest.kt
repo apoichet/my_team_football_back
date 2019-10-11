@@ -1,14 +1,15 @@
-package com.myteam.usecase
+package com.myteam.core.usecase
 
-import com.myteam.domain.*
-import com.myteam.enums.PlayerFoot
-import com.myteam.enums.PlayerPosition
-import com.myteam.exception.TeamAlreadyExists
-import com.myteam.exception.TeamNotExists
-import com.myteam.exception.UserAccountUnknown
-import com.myteam.exception.UserMailAlreadyExist
+import com.myteam.core.domain.*
+import com.myteam.core.enums.PlayerFoot
+import com.myteam.core.enums.PlayerPosition
+import com.myteam.core.exception.TeamAlreadyExists
+import com.myteam.core.exception.TeamNotExists
+import com.myteam.core.exception.UserAccountUnknown
+import com.myteam.core.exception.UserMailAlreadyExist
 import com.myteam.repository.TeamRepository
 import com.myteam.repository.UserRepository
+import com.myteam.core.domain.*
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.never
 import com.nhaarman.mockitokotlin2.verify
@@ -250,14 +251,16 @@ internal class UserAccountTest {
     }
 
     private fun buildUser(id: String, mail: String, password: String): User {
-        return User(id = id,
+        return User(
+            id = id,
             contact = buildContact(mail),
             password = password
         )
     }
 
     private fun buildTeam(token: String): Team {
-        return Team(token = token,
+        return Team(
+            token = token,
             name = "name",
             creationDate = LocalDateTime.now(),
             licenceAmount = 0.0f,
@@ -267,7 +270,8 @@ internal class UserAccountTest {
     }
 
     private fun buildPlayer(mail : String): Player {
-        return Player(contact = buildContact(mail),
+        return Player(
+            contact = buildContact(mail),
             strongFoot = PlayerFoot.BOTH,
             positions = emptyList(),
             originalPosition = PlayerPosition.GK

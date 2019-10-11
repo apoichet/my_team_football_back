@@ -1,4 +1,4 @@
-package com.myteam.domain
+package com.myteam.core.domain
 
 import java.time.LocalDate
 import java.time.LocalDateTime

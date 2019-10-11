@@ -1,4 +1,4 @@
-package com.myteam.exception
+package com.myteam.core.exception
 
 abstract class UserException(msg: String) : Throwable()
 

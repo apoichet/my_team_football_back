@@ -1,18 +1,19 @@
-package com.myteam.usecase
+package com.myteam.core.usecase
 
-import com.myteam.domain.Contact
-import com.myteam.domain.Player
-import com.myteam.domain.Team
-import com.myteam.domain.User
-import com.myteam.exception.TeamAlreadyExists
-import com.myteam.exception.TeamNotExists
-import com.myteam.exception.UserAccountUnknown
-import com.myteam.exception.UserMailAlreadyExist
+import com.myteam.core.domain.Contact
+import com.myteam.core.domain.Player
+import com.myteam.core.domain.Team
+import com.myteam.core.domain.User
+import com.myteam.core.exception.TeamAlreadyExists
+import com.myteam.core.exception.TeamNotExists
+import com.myteam.core.exception.UserAccountUnknown
+import com.myteam.core.exception.UserMailAlreadyExist
 import com.myteam.repository.TeamRepository
 import com.myteam.repository.UserRepository
 
 class UserAccount(private val userRepository: UserRepository,
-                  private val teamRepositoy: TeamRepository) {
+                  private val teamRepositoy: TeamRepository
+) {
 
     fun createAccount(newUser: User): User {
         userRepository.findBy(newUser.contact.mail)?.let {

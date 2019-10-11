@@ -1,5 +1,5 @@
 package com.myteam.repository
 
-import com.myteam.domain.Team
+import com.myteam.core.domain.Team
 
 interface TeamRepository: CrudRepository<Team>

@@ -1,6 +1,6 @@
 package com.myteam.repository
 
-import com.myteam.domain.User
+import com.myteam.core.domain.User
 
 interface UserRepository : CrudRepository<User> {
 
