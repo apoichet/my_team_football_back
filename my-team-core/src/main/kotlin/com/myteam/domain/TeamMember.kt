@@ -1,5 +1,8 @@
 package com.myteam.domain
 
+import com.myteam.enums.PaymentType
+import com.myteam.enums.PlayerFoot
+import com.myteam.enums.PlayerPosition
 import java.time.LocalDateTime
 
 open class TeamMember(
@@ -20,7 +23,8 @@ class Player (
     var weight: Int = 0,
     var height: Int = 0,
     var originalPosition: PlayerPosition,
-    var positions: List<PlayerPosition>
+    var positions: List<PlayerPosition>,
+    var playerContributions: List<PlayerContribution> = emptyList()
 ): TeamMember(
     contact,
     creationDate,
@@ -29,13 +33,6 @@ class Player (
     verbatim
 )
 
-enum class PlayerPosition(val position: String) {
-    GK("Goal Keeper")
-}
-
-enum class PlayerFoot {
-    LEFT, RIGHT, BOTH
-}
+class PlayerContribution(val player: Player, val amount: Float, var paymentType: PaymentType)
 
 
-class Adress(val adress: String, val city: String, val zipCode: String, val country: String = "France")

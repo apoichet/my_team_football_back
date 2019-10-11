@@ -1,5 +1,6 @@
 package com.myteam.domain
 
+import com.myteam.enums.*
 import java.time.LocalDateTime
 
 class Game(
@@ -16,7 +17,7 @@ class Game(
 
 class PlayerGame(
     val player: Player,
-    var state: PlayerState,
+    var state: PlayerGameState,
     var arriving: LocalDateTime,
     var goals: List<Goal>,
     var decisivePass: Int,
@@ -24,34 +25,12 @@ class PlayerGame(
     var redCard: Int,
     var minuteReferee: Int,
     var positions: List<PlayerPosition>,
-    var coachRate: Int,
-    var teamRate: Int
+    var coachRate: Int
 )
 
-enum class GameConclusion {
-    VICTORY, DEFEAT, EQUALITY
-}
+class Goal(var member: GoalMember,
+           var type: GoalType)
 
-enum class GamePlace {
-    HOME, AWAY, NEUTRAL
-}
 
-enum class GameType {
-    CHAMPIONSHIP, CUP, FRIENDLY
-}
-
-data class Goal(var member: GoalMember, var type: GoalType)
-
-enum class GoalMember {
-    HEAD, LEFT_FOOT, RIGHT_FOOT
-}
-
-enum class GoalType {
-    IN_GAME, KICK, PENALTY
-}
-
-enum class PlayerState {
-    PRESENT, ABSENT, INJURED, NOT_SELECTED
-}
 
 

@@ -1,6 +1,8 @@
 package com.myteam.usecase
 
 import com.myteam.domain.*
+import com.myteam.enums.PlayerFoot
+import com.myteam.enums.PlayerPosition
 import com.myteam.exception.TeamAlreadyExists
 import com.myteam.exception.TeamNotExists
 import com.myteam.exception.UserAccountUnknown

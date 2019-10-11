@@ -1,5 +1,6 @@
 package com.myteam.domain
 
+import com.myteam.enums.PaymentType
 import java.time.LocalDateTime
 
 class Team(
@@ -14,15 +15,8 @@ class Team(
     var president: TeamMember,
     var coach: TeamMember? = null,
     var players: List<Player> = emptyList(),
-    var playerContributions: List<PlayerContribution> = emptyList(),
     var rib: Rib? = null)
 
-data class Stadium(var name: String, var adress: Adress)
+class Stadium(var name: String, var adress: Adress)
 
-data class PlayerContribution(val player: Player, val amount: Float, var paymentType: PaymentType)
-
-enum class PaymentType {
-    TRANSFERT, CASH, CHECK
-}
-
-data class Rib(var iban: String)
+class Rib(var iban: String)
