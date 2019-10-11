@@ -1,5 +1,5 @@
 rootProject.name = 'my-team'
 
 include "my-team-core"
-include "my-team-repository"
+include "my-team-repository-jpa"
 
