@@ -1,11 +1,13 @@
 package com.myteam.usecase
 
-import com.myteam.domain.*
+import com.myteam.domain.Contact
+import com.myteam.domain.Player
+import com.myteam.domain.Team
+import com.myteam.domain.User
 import com.myteam.exception.TeamAlreadyExists
 import com.myteam.exception.TeamNotExists
-import com.myteam.exception.UserMailAlreadyExist
 import com.myteam.exception.UserAccountUnknown
-import com.myteam.repository.TeamMemberRepository
+import com.myteam.exception.UserMailAlreadyExist
 import com.myteam.repository.TeamRepository
 import com.myteam.repository.UserRepository
 
