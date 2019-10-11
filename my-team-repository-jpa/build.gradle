@@ -3,8 +3,7 @@ plugins {
 }
 
 dependencies {
-    compile "org.hibernate:hibernate-core:5.2.15.Final"
-    testCompile "org.hibernate:hibernate-testing:5.2.15.Final"
+    implementation project(':my-team-core')
     testCompile "com.h2database:h2:1.4.196"
 }
 

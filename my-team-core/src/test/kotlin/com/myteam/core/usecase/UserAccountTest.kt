@@ -9,7 +9,6 @@ import com.myteam.core.exception.UserAccountUnknown
 import com.myteam.core.exception.UserMailAlreadyExist
 import com.myteam.repository.TeamRepository
 import com.myteam.repository.UserRepository
-import com.myteam.core.domain.*
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.never
 import com.nhaarman.mockitokotlin2.verify
@@ -264,7 +263,7 @@ internal class UserAccountTest {
             name = "name",
             creationDate = LocalDateTime.now(),
             licenceAmount = 0.0f,
-            homeStadium = Stadium("name", Adress("", "", "")),
+            homeStadium = Stadium("name", Address("", "", "")),
             president = buildTeamMember("mail")
         )
     }

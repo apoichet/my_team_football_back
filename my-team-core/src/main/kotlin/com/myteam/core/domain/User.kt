@@ -17,12 +17,12 @@ class Contact(
     var lastName: String,
     var birthdate: LocalDate = LocalDate.of(1970, 1, 1),
     var phone: String = "",
-    var adress: List<Adress> = emptyList()
+    var addresses: List<Address> = emptyList()
 )
 
-class Adress(var adress: String,
-             var city: String,
-             var zipCode: String,
-             var country: String = "France")
+class Address(var adress: String,
+              var city: String,
+              var zipCode: String,
+              var country: String = "France")
 
 

@@ -16,6 +16,6 @@ class Team(
     var players: List<Player> = emptyList(),
     var rib: Rib? = null)
 
-class Stadium(var name: String, var adress: Adress)
+class Stadium(var name: String, var address: Address)
 
 class Rib(var iban: String)

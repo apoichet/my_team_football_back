@@ -8,3 +8,5 @@
 .gradle
 /build
 */build
+my_team.mv.db
+my_team.trace.db

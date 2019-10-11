@@ -11,7 +11,7 @@ class Game(
     var rendezVous: LocalDateTime? = null,
     var nbrGoalTeam: Int = 0,
     var nbrGoalOpponent: Int = 0,
-    var adressStadium: Adress,
+    var addressStadium: Address,
     var gamePlayers: List<PlayerGame> = emptyList()
 )
 
