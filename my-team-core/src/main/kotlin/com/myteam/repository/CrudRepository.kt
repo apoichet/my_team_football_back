@@ -2,7 +2,7 @@ package com.myteam.repository
 
 interface CrudRepository<O> {
 
-    fun find(id: String): O?
+    fun find(id: Any): O?
 
     fun findAll(): List<O>
 

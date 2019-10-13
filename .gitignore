@@ -8,5 +8,6 @@
 .gradle
 /build
 */build
-my_team.mv.db
-my_team.trace.db
+my_team-create.ddl
+my_team-drop.ddl
+*.log

@@ -7,32 +7,33 @@ import javax.persistence.*
 data class Team (
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    val id: Int,
+    @GeneratedValue(generator = "uuid")
+    @Column(name = "PR_KEY")
+    val id: String,
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "creation_date")
     val creationDate: LocalDateTime,
 
     @Column(nullable = false)
     val name: String,
 
     @Column(nullable = true)
-    val logo: String,
+    val logo: String?,
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "licence_amount")
     val licenceAmount: Float,
 
     @OneToOne
     val president: TeamMember,
 
     @OneToOne
-    val coach: TeamMember,
+    val coach: TeamMember?,
 
     @OneToOne
     val homeStadium: Stadium,
 
     @OneToOne
-    val rib: Rib,
+    val rib: Rib?,
 
     @OneToMany
     val colors: Collection<Color>,
@@ -41,6 +42,7 @@ data class Team (
     val pictures: Collection<Picture>,
 
     @OneToMany
+    @JoinColumn
     val players: Collection<TeamMember>
 
 )

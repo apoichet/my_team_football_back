@@ -8,9 +8,9 @@ data class Game (
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    val id: Int,
+    val id: Int = 0,
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "name_opponent")
     val nameOpponent: String,
 
     @Column(nullable = false)
@@ -22,19 +22,20 @@ data class Game (
     @Column(nullable = false)
     val start: LocalDateTime,
 
-    @Column(nullable = true)
+    @Column(nullable = true, name = "rendez_vous")
     val rendezVous: LocalDateTime,
 
-    @Column(nullable = false)
-    val nbrGoalTeam: Int,
+    @Column(nullable = false, name = "nb_goal_team")
+    val nbGoalTeam: Int,
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "nb_goal_opponent")
     val nbrGoalOpponent: Int,
 
     @OneToOne
     val addressStadium: Address,
 
     @OneToMany
+    @JoinColumn
     val gamePlayers: Collection<GamePlayer>
 
 )

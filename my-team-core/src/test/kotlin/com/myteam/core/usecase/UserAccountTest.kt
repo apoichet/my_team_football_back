@@ -35,8 +35,8 @@ internal class UserAccountTest {
     @Test
     fun `should create new valid user account`() {
         //Given
-        val user = buildUser("0", "mail", "password")
-        val userSaved = buildUser("1", "mail", "password")
+        val user = buildUser( "mail", "password")
+        val userSaved = buildUser("mail", "password")
         //When
         whenever(mockUserRepo.findBy("mail")).thenReturn(null)
         whenever(mockUserRepo.create(user)).thenReturn(userSaved)
@@ -50,7 +50,7 @@ internal class UserAccountTest {
     @Test
     fun `should reject creation when user mail already exists`() {
         //When
-        val userAlreadyExists = buildUser("1", "MAIL_ALREADY_EXISTS", "password")
+        val userAlreadyExists = buildUser("MAIL_ALREADY_EXISTS", "password")
         whenever(mockUserRepo.findBy("MAIL_ALREADY_EXISTS")).thenReturn(userAlreadyExists)
         //Then
         assertThrows<UserMailAlreadyExist> {
@@ -61,7 +61,7 @@ internal class UserAccountTest {
     @Test
     fun `should log existing user`() {
         //Given
-        val user = buildUser("1", "mail", "password")
+        val user = buildUser( "mail", "password")
         user.teams = listOf(buildTeam("1"))
         //When
         whenever(mockUserRepo.findBy("mail")).thenReturn(user)
@@ -84,7 +84,7 @@ internal class UserAccountTest {
     @Test
     fun `should not log unknown password`() {
         //Given
-        val user = buildUser("1", "mail", "password")
+        val user = buildUser( "mail", "password")
         //When
         whenever(mockUserRepo.findBy("mail")).thenReturn(user)
         val userExpected = sut.loginUser("mail", "other_password")
@@ -96,13 +96,13 @@ internal class UserAccountTest {
     @Test
     fun `should close existing account`() {
         //Given
-        val existingUser = buildUser("1", "mail", "password")
+        val existingUser = buildUser("mail", "password")
         //When
-        whenever(mockUserRepo.find("1")).thenReturn(existingUser)
+        whenever(mockUserRepo.find(1)).thenReturn(existingUser)
         whenever(mockUserRepo.delete(existingUser)).thenReturn(true)
         val responseClose = sut.closeAccount(existingUser)
         //Then
-        verify(mockUserRepo).find("1")
+        verify(mockUserRepo).find(1)
         verify(mockUserRepo).delete(existingUser)
         assertTrue(responseClose)
     }
@@ -110,12 +110,12 @@ internal class UserAccountTest {
     @Test
     fun `should close unknown account`() {
         //Given
-        val existingUser = buildUser("1", "mail", "password")
+        val existingUser = buildUser( "mail", "password")
         //When
-        whenever(mockUserRepo.find("1")).thenReturn(null)
+        whenever(mockUserRepo.find(1)).thenReturn(null)
         val responseClose = sut.closeAccount(existingUser)
         //Then
-        verify(mockUserRepo).find("1")
+        verify(mockUserRepo).find(1)
         verify(mockUserRepo, never()).delete(existingUser)
         assertTrue(responseClose)
     }
@@ -123,14 +123,14 @@ internal class UserAccountTest {
     @Test
     fun `should let modify user contact`() {
         //Given
-        val existingUser = buildUser("1", "mail", "password")
+        val existingUser = buildUser("mail", "password")
         val contactModified = buildContact("new_mail")
         //When
-        whenever(mockUserRepo.find("1")).thenReturn(existingUser)
+        whenever(mockUserRepo.find(1)).thenReturn(existingUser)
         whenever(mockUserRepo.update(existingUser)).thenReturn(existingUser)
         val userReturn = sut.modifyContact(existingUser, contactModified)
         //Then
-        verify(mockUserRepo).find("1")
+        verify(mockUserRepo).find(1)
         verify(mockUserRepo).update(existingUser)
         assertEquals(contactModified, userReturn?.contact)
     }
@@ -138,14 +138,14 @@ internal class UserAccountTest {
     @Test
     fun `should let modify user password`() {
         //Given
-        val existingUser = buildUser("1", "mail", "password")
+        val existingUser = buildUser( "mail", "password")
         val newPassword = "new_password"
         //When
-        whenever(mockUserRepo.find("1")).thenReturn(existingUser)
+        whenever(mockUserRepo.find(1)).thenReturn(existingUser)
         whenever(mockUserRepo.update(existingUser)).thenReturn(existingUser)
         val userReturn = sut.modifyPassword(existingUser, newPassword)
         //Then
-        verify(mockUserRepo).find("1")
+        verify(mockUserRepo).find(1)
         verify(mockUserRepo).update(existingUser)
         assertEquals(newPassword, userReturn?.password)
     }
@@ -153,13 +153,13 @@ internal class UserAccountTest {
     @Test
     fun `should reject when modify unknown user`() {
         //Given
-        val unknownUser = buildUser("1", "mail", "password")
+        val unknownUser = buildUser( "mail", "password")
         val contactModified = buildContact("new_mail")
         //When
-        whenever(mockUserRepo.find("1")).thenReturn(null)
+        whenever(mockUserRepo.find(1)).thenReturn(null)
         //Then
         assertThrows<UserAccountUnknown> { sut.modifyContact(unknownUser, contactModified) }
-        verify(mockUserRepo).find("1")
+        verify(mockUserRepo).find(1)
         verify(mockUserRepo, never()).update(unknownUser)
     }
 
@@ -188,21 +188,21 @@ internal class UserAccountTest {
     @Test
     fun `should create new team with token`() {
         //Given
-        val user = buildUser("1", "mail", "password")
+        val user = buildUser("mail", "password")
         val teamWithoutToken = buildTeam("")
         val newTeam = buildTeam("token")
         //When
         whenever(mockTeamRepo.create(teamWithoutToken)).thenReturn(newTeam)
         val teamReturn = sut.createTeam(user, teamWithoutToken)
         //Then
-        verify(mockTeamRepo). create(teamWithoutToken)
+        verify(mockTeamRepo).create(teamWithoutToken)
         assertEquals(teamReturn, newTeam)
     }
 
     @Test
     fun `should reject creation team when user has already created a team with the same name`() {
         //Given
-        val user = buildUser("1", "mail", "password")
+        val user = buildUser("mail", "password")
         val userTeam = buildTeam("token")
         userTeam.name = "name"
         user.teams = listOf(userTeam)
@@ -249,9 +249,9 @@ internal class UserAccountTest {
         return Contact(mail, "firtsname", "lastname")
     }
 
-    private fun buildUser(id: String, mail: String, password: String): User {
+    private fun buildUser(mail: String, password: String): User {
         return User(
-            id = id,
+            id = 1,
             contact = buildContact(mail),
             password = password
         )

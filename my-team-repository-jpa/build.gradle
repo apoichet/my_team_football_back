@@ -4,6 +4,7 @@ plugins {
 
 dependencies {
     implementation project(':my-team-core')
+    compile "org.eclipse.persistence:org.eclipse.persistence.jpa:2.7.3"
     testCompile "com.h2database:h2:1.4.196"
 }
 

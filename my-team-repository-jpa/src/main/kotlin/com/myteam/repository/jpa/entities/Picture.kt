@@ -7,9 +7,9 @@ data class Picture (
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    val id: Int,
+    val id: Int = 0,
 
-    @Column
+    @Column(name = "code_base_64")
     val codeBase64: String
 
 )

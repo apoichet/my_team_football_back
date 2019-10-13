@@ -48,7 +48,7 @@ class UserAccount(private val userRepository: UserRepository,
 
     fun modifyPassword(user: User, password: String): User? {
         userRepository.find(user.id)?.let { userFound ->
-            //Update user contact
+            //Update user password
             userFound.password = password
             return userRepository.update(userFound)
         }

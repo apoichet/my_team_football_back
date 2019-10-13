@@ -6,19 +6,21 @@ import javax.persistence.*
 @Entity
 data class User(
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     val id: Int,
 
-    @OneToOne
+    @OneToOne(cascade = [CascadeType.PERSIST])
     val contact: Contact,
 
     @Column(nullable = false)
     val password: String,
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "creation_date")
     val creationDate: LocalDateTime,
 
-    @OneToMany
+    //@OneToMany
+    //@JoinColumn
+    @Transient
     val teams: Collection<Team>
 
 

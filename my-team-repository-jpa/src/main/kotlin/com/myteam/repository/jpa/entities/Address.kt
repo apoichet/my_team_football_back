@@ -7,7 +7,7 @@ data class Address (
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    val id: Int,
+    val id: Int = 0,
 
     @Column(nullable = false)
     val address: String,
@@ -15,7 +15,7 @@ data class Address (
     @Column(nullable = false)
     val city: String,
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "zip_code")
     val zipCode: String,
 
     @Column(nullable = false)

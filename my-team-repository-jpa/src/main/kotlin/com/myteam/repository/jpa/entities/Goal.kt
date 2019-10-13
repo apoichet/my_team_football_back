@@ -7,9 +7,9 @@ data class Goal (
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    val id: Int,
+    val id: Int = 0,
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "goal_member")
     val goalMember: String,
 
     @Column(nullable = false)
