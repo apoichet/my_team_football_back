@@ -10,7 +10,7 @@ data class Contact(
     @GeneratedValue(strategy = GenerationType.AUTO)
     val id: Int = 0,
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     val mail: String,
 
     @Column(nullable = false, name = "first_name")
@@ -25,7 +25,7 @@ data class Contact(
     @Column(nullable = false, name = "phone_number")
     val phoneNumber: String,
 
-    @OneToMany(cascade = [CascadeType.PERSIST])
+    @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.EAGER)
     val addresses: Collection<Address>
 
 

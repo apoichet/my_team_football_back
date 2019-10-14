@@ -246,7 +246,7 @@ internal class UserAccountTest {
     }
 
     private fun buildContact(mail: String): Contact {
-        return Contact(mail, "firtsname", "lastname")
+        return Contact(mail, "firstname", "lastname")
     }
 
     private fun buildUser(mail: String, password: String): User {
