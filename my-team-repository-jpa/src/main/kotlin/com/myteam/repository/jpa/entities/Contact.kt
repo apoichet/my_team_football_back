@@ -25,7 +25,9 @@ data class Contact(
     @Column(nullable = false, name = "phone_number")
     val phoneNumber: String,
 
-    @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.EAGER)
+    @OneToMany(cascade = [CascadeType.ALL],
+        fetch = FetchType.EAGER,
+        orphanRemoval = true)
     val addresses: Collection<Address>
 
 

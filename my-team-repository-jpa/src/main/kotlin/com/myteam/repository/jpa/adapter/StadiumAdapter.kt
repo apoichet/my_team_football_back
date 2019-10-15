@@ -3,11 +3,20 @@ package com.myteam.repository.jpa.adapter
 import com.myteam.core.domain.Stadium
 
 class StadiumAdapter: RepositoryAdapter<Stadium, com.myteam.repository.jpa.entities.Stadium> {
+
+    private val addressAdapter = AddressAdapter()
+
     override fun convertDomainObjectToData(domainObject: Stadium): com.myteam.repository.jpa.entities.Stadium {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return com.myteam.repository.jpa.entities.Stadium(
+            address = addressAdapter.convertDomainObjectToData(domainObject.address),
+            name = domainObject.name
+        )
     }
 
     override fun convertDataToDomainObject(data: com.myteam.repository.jpa.entities.Stadium): Stadium {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        return Stadium(
+            address = addressAdapter.convertDataToDomainObject(data.address),
+            name = data.name
+        )
     }
 }

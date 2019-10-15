@@ -23,26 +23,26 @@ data class TeamMember (
     @Column(nullable = false)
     val verbatim: String,
 
-    @Column(nullable = false, name = "strong_foot")
-    val strongFoot: String,
+    @Column(nullable = true, name = "strong_foot")
+    val strongFoot: String? = null,
 
-    @Column(nullable = false)
-    val weight: Int,
+    @Column(nullable = true)
+    val weight: Int? = null,
 
-    @Column(nullable = false)
-    val height: Int,
+    @Column(nullable = true)
+    val height: Int? = null,
 
-    @Column(nullable = false, name = "original_position")
-    val originalPosition: String,
+    @Column(nullable = true, name = "original_position")
+    val originalPosition: String? = null,
 
     @OneToOne
     val contact: Contact,
 
     @OneToMany
-    val positions: Collection<PlayerPosition>,
+    val positions: Collection<PlayerPosition> = emptyList(),
 
     @OneToMany
-    val contributions: Collection<PlayerContribution>
+    val contributions: Collection<PlayerContribution> = emptyList()
 
 
 )

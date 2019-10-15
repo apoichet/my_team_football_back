@@ -5,9 +5,9 @@ import com.myteam.repository.UserRepository
 import com.myteam.repository.jpa.adapter.UserAdapter
 import javax.persistence.*
 
-class UserRepositoryImpl(dataBaseLocation: String): UserRepository {
+class UserRepositoryImpl(persistenceUnitName: String): UserRepository {
 
-    private val emf: EntityManagerFactory = Persistence.createEntityManagerFactory(dataBaseLocation)
+    private val emf: EntityManagerFactory = Persistence.createEntityManagerFactory(persistenceUnitName)
     private val em: EntityManager = emf.createEntityManager()
     private val tx: EntityTransaction = em.transaction
 
@@ -33,12 +33,14 @@ class UserRepositoryImpl(dataBaseLocation: String): UserRepository {
     }
 
     override fun delete(domainObject: User): Boolean {
-        val userToDelete = adapter.convertDomainObjectToData(domainObject)
-        em.merge(userToDelete)
-        tx.begin()
-        em.remove(userToDelete)
-        tx.commit()
-        return true
+        val userToDelete = em.find(com.myteam.repository.jpa.entities.User::class.java, domainObject.id)
+        userToDelete?.let {
+            tx.begin()
+            em.remove(userToDelete)
+            tx.commit()
+            return true
+        }
+        return false
     }
 
     override fun findBy(mail: String): User? {

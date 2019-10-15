@@ -9,7 +9,7 @@ data class User(
     @GeneratedValue(strategy = GenerationType.AUTO)
     val id: Int,
 
-    @OneToOne(cascade = [CascadeType.ALL])
+    @OneToOne(cascade = [CascadeType.ALL], orphanRemoval = true)
     val contact: Contact,
 
     @Column(nullable = false)
@@ -18,7 +18,7 @@ data class User(
     @Column(nullable = false, name = "creation_date")
     val creationDate: LocalDateTime,
 
-    @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.EAGER)
+    @OneToMany(cascade = [CascadeType.ALL], fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn
     val teams: Collection<Team>
 
