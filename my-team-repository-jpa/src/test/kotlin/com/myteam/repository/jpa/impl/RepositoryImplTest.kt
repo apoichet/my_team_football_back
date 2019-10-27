@@ -14,8 +14,8 @@ open class RepositoryImplTest {
     private val url = "jdbc:h2:mem:my_team"
     private val user = ""
     private val password = ""
-    private val dropDBscriptPath = "my_team-drop.ddl"
-    private val createDBscriptPath = "my_team-create.ddl"
+    private val dropDBscriptPath = "src/test/resources/my_team-drop.ddl"
+    private val createDBscriptPath = "src/test/resources/my_team-create.ddl"
 
     private val dropSequence = "DROP TABLE SEQUENCE"
 

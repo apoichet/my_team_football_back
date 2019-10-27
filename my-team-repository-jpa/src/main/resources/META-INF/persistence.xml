@@ -24,40 +24,13 @@
             <property name="javax.persistence.data-base-product-name" value="H2"/>
             <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
             <property name="javax.persistence.schema-generation.scripts.action" value="drop-and-create"/>
-            <property name="javax.persistence.schema-generation.scripts.create-target" value="my_team-create.ddl"/>
-            <property name="javax.persistence.schema-generation.scripts.drop-target" value="my_team-drop.ddl"/>
+            <property name="javax.persistence.schema-generation.scripts.create-target" value="src/test/resources/my_team-create.ddl"/>
+            <property name="javax.persistence.schema-generation.scripts.drop-target" value="src/test/resources/my_team-drop.ddl"/>
             <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>
 
             <property name="javax.persistence.jdbc.url" value="jdbc:h2:mem:my_team;create=true"/>
             <property name="eclipselink.logging.level" value="INFO"/>
         </properties>
-
-
-    </persistence-unit>
-
-    <persistence-unit name="my_team_pu" transaction-type="RESOURCE_LOCAL" >
-
-        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-        <class>com.myteam.repository.jpa.entities.Address</class>
-        <class>com.myteam.repository.jpa.entities.Contact</class>
-        <class>com.myteam.repository.jpa.entities.User</class>
-
-        <properties>
-            <property name="javax.persistence.data-base-product-name" value="H2"/>
-            <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
-            <property name="javax.persistence.schema-generation.scripts.action" value="drop-and-create"/>
-            <property name="javax.persistence.schema-generation.scripts.create-target" value="my_team-create.ddl"/>
-            <property name="javax.persistence.schema-generation.scripts.drop-target" value="my_team-drop.ddl"/>
-
-            <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>
-            <property name="javax.persistence.jdbc.url" value="jdbc:h2:file:../my_team;AUTO_SERVER=TRUE"/>
-
-            <property name="javax.persistence.jdbc.user" value="root"/>
-            <property name="javax.persistence.jdbc.password" value="root"/>
-
-            <property name="eclipselink.logging.level" value="INFO"/>
-        </properties>
-
 
     </persistence-unit>
 
