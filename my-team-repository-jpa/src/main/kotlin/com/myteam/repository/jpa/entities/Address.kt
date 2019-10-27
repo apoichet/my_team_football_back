@@ -6,8 +6,8 @@ import javax.persistence.*
 data class Address (
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    val id: Int = 0,
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Int?,
 
     @Column(nullable = false)
     val address: String,

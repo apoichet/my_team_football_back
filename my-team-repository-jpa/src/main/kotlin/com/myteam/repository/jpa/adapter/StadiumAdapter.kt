@@ -2,7 +2,8 @@ package com.myteam.repository.jpa.adapter
 
 import com.myteam.core.domain.Stadium
 
-class StadiumAdapter: RepositoryAdapter<Stadium, com.myteam.repository.jpa.entities.Stadium> {
+class StadiumAdapter:
+    RepositoryAdapter<Stadium, com.myteam.repository.jpa.entities.Stadium> {
 
     private val addressAdapter = AddressAdapter()
 

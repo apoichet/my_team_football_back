@@ -2,9 +2,10 @@ package com.myteam.repository.jpa.adapter
 
 import com.myteam.core.domain.TeamMember
 
-class TeamMemberAdapter: RepositoryAdapter<TeamMember, com.myteam.repository.jpa.entities.TeamMember> {
+class TeamMemberAdapter:
+    RepositoryAdapter<TeamMember, com.myteam.repository.jpa.entities.TeamMember> {
 
-    private val contactAdapter = ContactAdapter()
+    private val contactAdapter = com.myteam.repository.jpa.adapter.ContactAdapter()
 
     override fun convertDomainObjectToData(domainObject: TeamMember): com.myteam.repository.jpa.entities.TeamMember {
        return com.myteam.repository.jpa.entities.TeamMember(

@@ -2,9 +2,11 @@ package com.myteam.repository.jpa.adapter
 
 import com.myteam.core.domain.Address
 
-class AddressAdapter: RepositoryAdapter<Address, com.myteam.repository.jpa.entities.Address> {
+class AddressAdapter:
+    RepositoryAdapter<Address, com.myteam.repository.jpa.entities.Address> {
     override fun convertDomainObjectToData(domainObject: Address): com.myteam.repository.jpa.entities.Address {
         return com.myteam.repository.jpa.entities.Address(
+            id = null,
             address = domainObject.address,
             city = domainObject.city,
             zipCode = domainObject.zipCode,

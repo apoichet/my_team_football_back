@@ -4,7 +4,8 @@ import com.myteam.core.domain.Team
 import com.myteam.repository.jpa.entities.Color
 import com.myteam.repository.jpa.entities.Picture
 
-class TeamAdapter: RepositoryAdapter<Team, com.myteam.repository.jpa.entities.Team> {
+class TeamAdapter:
+    RepositoryAdapter<Team, com.myteam.repository.jpa.entities.Team> {
 
     private val teamMemberAdapter = TeamMemberAdapter()
     private val playerAdapter = PlayerAdapter()

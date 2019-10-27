@@ -4,7 +4,6 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 
 class User(
-    var id: Int = 0,
     var contact: Contact,
     var password: String,
     var teams: List<Team> = emptyList(),
@@ -20,9 +19,10 @@ class Contact(
     var addresses: List<Address> = emptyList()
 )
 
-class Address(var address: String,
-              var city: String,
-              var zipCode: String,
-              var country: String = "France")
+class Address(
+    var address: String,
+    var city: String,
+    var zipCode: String,
+    var country: String = "France")
 
 

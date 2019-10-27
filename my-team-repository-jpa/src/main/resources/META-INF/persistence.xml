@@ -26,10 +26,9 @@
             <property name="javax.persistence.schema-generation.scripts.action" value="drop-and-create"/>
             <property name="javax.persistence.schema-generation.scripts.create-target" value="my_team-create.ddl"/>
             <property name="javax.persistence.schema-generation.scripts.drop-target" value="my_team-drop.ddl"/>
-
             <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>
-            <property name="javax.persistence.jdbc.url" value="jdbc:h2:mem:my_team"/>
 
+            <property name="javax.persistence.jdbc.url" value="jdbc:h2:mem:my_team;create=true"/>
             <property name="eclipselink.logging.level" value="INFO"/>
         </properties>
 

@@ -7,10 +7,10 @@ import javax.persistence.*
 data class Contact(
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    val id: Int = 0,
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Int?,
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     val mail: String,
 
     @Column(nullable = false, name = "first_name")
@@ -28,7 +28,7 @@ data class Contact(
     @OneToMany(cascade = [CascadeType.ALL],
         fetch = FetchType.EAGER,
         orphanRemoval = true)
-    val addresses: Collection<Address>
+    val addresses: Collection<com.myteam.repository.jpa.entities.Address>
 
 
 )
