@@ -1,21 +1,24 @@
 package com.myteam.repository.jpa.impl
 
 import com.myteam.core.domain.*
-import com.myteam.core.enums.PlayerFoot
-import com.myteam.core.enums.PlayerPosition
 import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
-import java.time.LocalDateTime
+import java.sql.DriverManager
+import java.sql.SQLException
+import java.util.*
+import java.io.BufferedReader
+import java.io.FileReader
 
-internal class UserRepositoryImplTest {
+
+internal class UserRepositoryImplTest: RepositoryImplTest() {
 
     private val sut = UserRepositoryImpl("my_team_pu_test")
 
     @Test
     fun `should find a new user`() {
         //Given
-        val newUser = buildUser("mail1", "mdp")
+        val newUser = buildUser("mail", "mdp")
         //When
         val userCreated = sut.create(newUser)
         val userFound = sut.findByMail(userCreated.contact.mail)
@@ -36,7 +39,7 @@ internal class UserRepositoryImplTest {
     @Test
     fun `should update user mail`() {
         //Given
-        val newUser = buildUser("mail2", "mdp")
+        val newUser = buildUser("mail", "mdp")
         //When
         sut.create(newUser)
         val userUpdated = sut.updateContact(newUser,  buildContact("new_mail"))
@@ -47,7 +50,7 @@ internal class UserRepositoryImplTest {
     @Test
     fun `should update user password`() {
         //Given
-        val newUser = buildUser("mail3", "mdp")
+        val newUser = buildUser("mail", "mdp")
         //When
         sut.create(newUser)
         val userUpdated = sut.updatePassword(newUser, "new_mdp")
@@ -58,7 +61,7 @@ internal class UserRepositoryImplTest {
     @Test
     fun `should update user addresses`() {
         //Given
-        val newUser = buildUser("mail4", "mdp")
+        val newUser = buildUser("mail", "mdp")
         val address1 = buildAddress("2 rue Pleyel")
         val address2 = buildAddress("3 rue du stade")
         val addresses = listOf(address1, address2)
@@ -76,7 +79,7 @@ internal class UserRepositoryImplTest {
     @Test
     fun `should delete user`() {
         //Given
-        val newUser = buildUser("mail5", "mdp")
+        val newUser = buildUser("mail", "mdp")
         //When
         val userCreated = sut.create(newUser)
         val deleted = sut.delete(userCreated)
@@ -87,7 +90,7 @@ internal class UserRepositoryImplTest {
     @Test
     fun `should delete user with addresses`() {
         //Given
-        val newUser = buildUser("mail6", "mdp")
+        val newUser = buildUser("mail", "mdp")
         val address1 = buildAddress("2 rue Pleyel")
         val address2 = buildAddress("3 rue du stade")
         val addresses = listOf(address1, address2)
