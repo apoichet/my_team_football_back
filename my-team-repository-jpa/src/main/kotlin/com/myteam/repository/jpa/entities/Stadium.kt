@@ -13,6 +13,6 @@ data class Stadium (
     val name: String,
 
     @OneToOne
-    val address: com.myteam.repository.jpa.entities.Address
+    val address: Address
 
 )

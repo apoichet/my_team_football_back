@@ -28,7 +28,7 @@ data class Contact(
     @OneToMany(cascade = [CascadeType.ALL],
         fetch = FetchType.EAGER,
         orphanRemoval = true)
-    val addresses: Collection<com.myteam.repository.jpa.entities.Address>
+    val addresses: Collection<Address>
 
 
 )

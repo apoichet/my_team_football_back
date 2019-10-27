@@ -132,18 +132,6 @@ internal class UserAccountTest {
     }
 
     @Test
-    fun `should find existing team`() {
-        //Given
-        val team = buildTeam("1")
-        //When
-        whenever(mockTeamRepo.findByToken("1")).thenReturn(team)
-        val teamExpected = sut.findTeam("1")
-        //Then
-        verify(mockTeamRepo).findByToken("1")
-        assertEquals(teamExpected, team)
-    }
-
-    @Test
     fun `should create new team with token`() {
         //Given
         val user = buildUser("mail", "password")
@@ -183,7 +171,7 @@ internal class UserAccountTest {
         val teamReturn = sut.joinTeam(team, player)
         //Then
         verify(mockTeamRepo).addPlayer(team, player)
-        assertTrue(teamReturn.players.contains(player))
+        assertTrue(teamReturn?.players!!.contains(player))
 
     }
 

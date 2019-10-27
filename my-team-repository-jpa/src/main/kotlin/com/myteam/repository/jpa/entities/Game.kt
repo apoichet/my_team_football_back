@@ -32,7 +32,7 @@ data class Game (
     val nbrGoalOpponent: Int,
 
     @OneToOne
-    val addressStadium: com.myteam.repository.jpa.entities.Address,
+    val addressStadium: Address,
 
     @OneToMany
     @JoinColumn
