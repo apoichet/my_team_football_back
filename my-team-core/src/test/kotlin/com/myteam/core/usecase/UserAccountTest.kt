@@ -160,6 +160,18 @@ internal class UserAccountTest {
     }
 
     @Test
+    fun `should find existing team`() {
+        //Given
+        val team = buildTeam("token")
+        //When
+        whenever(mockTeamRepo.findByToken("token")).thenReturn(team)
+        val teamReturn = sut.findTeamByToken("token")
+        //Then
+        verify(mockTeamRepo).findByToken("token")
+        assertEquals(teamReturn, team)
+    }
+
+    @Test
     fun `should join existing team`() {
         //Given
         val team = buildTeam("token")
