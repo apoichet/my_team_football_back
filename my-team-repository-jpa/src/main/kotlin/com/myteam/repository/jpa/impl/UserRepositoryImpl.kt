@@ -1,27 +1,25 @@
 package com.myteam.repository.jpa.impl
 
 import com.myteam.core.domain.Contact
+import com.myteam.core.domain.Team
 import com.myteam.core.domain.User
 import com.myteam.infra.UserRepository
 import com.myteam.repository.jpa.adapter.ContactAdapter
+import com.myteam.repository.jpa.adapter.TeamAdapter
 import com.myteam.repository.jpa.adapter.UserAdapter
 import javax.persistence.*
 
-class UserRepositoryImpl(persistenceUnitName: String): UserRepository {
-
-    private val emf: EntityManagerFactory = Persistence.createEntityManagerFactory(persistenceUnitName)
-    private val em: EntityManager = emf.createEntityManager()
-    private val tx: EntityTransaction = em.transaction
+class UserRepositoryImpl(val em: EntityManager): UserRepository {
 
     private val userAdapater = UserAdapter()
     private val contactAdapter = ContactAdapter()
-
+    private val teamAdapter = TeamAdapter()
 
     override fun create(newUser: User): User {
         val userData = userAdapater.convertDomainObjectToData(newUser)
-        tx.begin()
+        em.transaction.begin()
         em.persist(userData)
-        tx.commit()
+        em.transaction.commit()
         return userAdapater.convertDataToDomainObject(userData)
     }
 
@@ -45,9 +43,9 @@ class UserRepositoryImpl(persistenceUnitName: String): UserRepository {
 
     override fun delete(userToDelete: User): Boolean {
         find(userToDelete.contact.mail)?.let {
-            tx.begin()
+            em.transaction.begin()
             em.remove(it)
-            tx.commit()
+            em.transaction.commit()
             return true
         }
         return false
@@ -60,6 +58,17 @@ class UserRepositoryImpl(persistenceUnitName: String): UserRepository {
         return null
     }
 
+    override fun addTeam(userWithNewTeam: User, newTeam: Team): Team {
+        find(userWithNewTeam.contact.mail)?.let {
+            val dataTeam = teamAdapter.convertDomainObjectToData(newTeam)
+            val userCopy = it.copy(teams =  it.teams.plus(dataTeam))
+            em.merge(userCopy)
+            return teamAdapter.convertDataToDomainObject(dataTeam)
+        }
+        return newTeam
+    }
+
+
     private fun find(mail: String): com.myteam.repository.jpa.entities.User? {
         val query = em.createQuery("select user from User user where user.contact.mail = ?1")
         query.setParameter(1, mail)
@@ -70,9 +79,6 @@ class UserRepositoryImpl(persistenceUnitName: String): UserRepository {
             System.out.println("User with mail '$mail' does not exist")
             return null
         }
-
-
-
     }
 
 }

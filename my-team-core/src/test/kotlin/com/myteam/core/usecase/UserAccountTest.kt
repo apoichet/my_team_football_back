@@ -138,10 +138,10 @@ internal class UserAccountTest {
         val teamWithoutToken = buildTeam("")
         val newTeam = buildTeam("token")
         //When
-        whenever(mockTeamRepo.create(teamWithoutToken)).thenReturn(newTeam)
+        whenever(mockUserRepo.addTeam(user, teamWithoutToken)).thenReturn(newTeam)
         val teamReturn = sut.createTeam(user, teamWithoutToken)
         //Then
-        verify(mockTeamRepo).create(teamWithoutToken)
+        verify(mockUserRepo).addTeam(user, teamWithoutToken)
         assertEquals(teamReturn, newTeam)
     }
 

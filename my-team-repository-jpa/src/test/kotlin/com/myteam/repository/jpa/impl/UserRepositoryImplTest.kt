@@ -2,18 +2,12 @@ package com.myteam.repository.jpa.impl
 
 import com.myteam.core.domain.*
 import org.junit.jupiter.api.Assertions.*
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import java.sql.DriverManager
-import java.sql.SQLException
-import java.util.*
-import java.io.BufferedReader
-import java.io.FileReader
 
 
 internal class UserRepositoryImplTest: RepositoryImplTest() {
 
-    private val sut = UserRepositoryImpl("my_team_pu_test")
+    private val sut = UserRepositoryImpl(super.em)
 
     @Test
     fun `should find a new user`() {
@@ -102,6 +96,20 @@ internal class UserRepositoryImplTest: RepositoryImplTest() {
         assertTrue(deleted)
     }
 
+    @Test
+    fun `should add new team to user teams`() {
+        //Given
+        val user = buildUser("mail", "mdp")
+        val newTeam = buildTeam("token", "mail_president")
+        //When
+        val newUser = sut.create(user)
+        val teamCreated = sut.addTeam(newUser, newTeam)
+        val userWithNewTeam = sut.findByMail("mail")
+        //Then
+        assertEquals(teamCreated.token, "token")
+        assertTrue(userWithNewTeam?.teams?.first()?.token.equals("token"))
+    }
+
     private fun buildContact(mail: String): Contact {
         return Contact(mail, "firtsname", "lastname")
     }
@@ -115,6 +123,25 @@ internal class UserRepositoryImplTest: RepositoryImplTest() {
             contact = buildContact(mail),
             password = password
         )
+    }
+
+    private fun buildTeam(token: String, mailPresident: String): Team {
+        return Team(
+            token = token,
+            name = "name",
+            president = buildTeamMember(mailPresident),
+            homeStadium = buildStadium()
+        )
+    }
+
+    private fun buildTeamMember(mail: String): TeamMember{
+        return TeamMember(
+            contact = buildContact(mail)
+        )
+    }
+
+    private fun buildStadium(): Stadium {
+        return Stadium(name = "name", address = buildAddress("2 rue du stade"))
     }
 
 }

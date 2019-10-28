@@ -7,6 +7,10 @@ import java.sql.DriverManager
 import java.sql.SQLException
 import java.sql.Statement
 import java.util.*
+import javax.persistence.EntityManager
+import javax.persistence.EntityManagerFactory
+import javax.persistence.EntityTransaction
+import javax.persistence.Persistence
 
 open class RepositoryImplTest {
 
@@ -18,6 +22,9 @@ open class RepositoryImplTest {
     private val createDBscriptPath = "src/test/resources/my_team-create.ddl"
 
     private val dropSequence = "DROP TABLE SEQUENCE"
+
+    private val emf: EntityManagerFactory = Persistence.createEntityManagerFactory("my_team_pu_test")
+    open val em: EntityManager = emf.createEntityManager()
 
     @AfterEach
     fun clearDataBase() {

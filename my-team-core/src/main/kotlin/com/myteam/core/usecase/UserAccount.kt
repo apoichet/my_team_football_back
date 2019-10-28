@@ -12,7 +12,7 @@ import com.myteam.infra.TeamRepository
 import com.myteam.infra.UserRepository
 
 class UserAccount(private val userRepository: UserRepository,
-                  private val teamRepositoy: TeamRepository) :
+                  private val teamRepository: TeamRepository) :
 UserRegister, UserTeamRegister{
 
     override fun createAccount(newUser: User): User? {
@@ -43,7 +43,7 @@ UserRegister, UserTeamRegister{
     }
 
     override fun findTeamByToken(token: String): Team? {
-        return teamRepositoy.findByToken(token)
+        return teamRepository.findByToken(token)
     }
 
     override fun createTeam(user: User, newTeam: Team): Team? {
@@ -53,12 +53,12 @@ UserRegister, UserTeamRegister{
         if (teamAlredyExists) {
             throw TeamAlreadyExists("User ${user.contact.mail} has already created a team with name ${newTeam.name}")
         }
-        return teamRepositoy.create(newTeam)
+        return userRepository.addTeam(user, newTeam)
     }
 
 
     override fun joinTeam(team: Team, player: Player): Team? {
-        return teamRepositoy.addPlayer(team, player)
+        return teamRepository.addPlayer(team, player)
     }
 
 }
