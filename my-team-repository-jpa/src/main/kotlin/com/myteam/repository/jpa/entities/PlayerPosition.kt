@@ -8,7 +8,7 @@ data class PlayerPosition (
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    val id: Int = 0,
+    val id: Int?,
 
     @Column(nullable = false)
     val position: String

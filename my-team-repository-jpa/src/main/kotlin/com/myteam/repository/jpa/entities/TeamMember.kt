@@ -9,7 +9,7 @@ data class TeamMember (
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    val id: Int = 0,
+    val id: Int?,
 
     @Column(nullable = false, name = "creation_date")
     val creationDate: LocalDateTime,

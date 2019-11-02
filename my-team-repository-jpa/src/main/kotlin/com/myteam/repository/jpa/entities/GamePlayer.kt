@@ -34,7 +34,7 @@ data class GamePlayer (
 
     @OneToMany
     @JoinColumn
-    val positions: Collection<PlayerPosition>,
+    val positions: Collection<String>,
 
     @OneToMany
     @JoinColumn

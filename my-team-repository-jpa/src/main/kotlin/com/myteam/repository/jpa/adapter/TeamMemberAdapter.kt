@@ -9,6 +9,7 @@ class TeamMemberAdapter:
 
     override fun convertDomainObjectToData(domainObject: TeamMember): com.myteam.repository.jpa.entities.TeamMember {
        return com.myteam.repository.jpa.entities.TeamMember(
+           id = null,
            contact = contactAdapter.convertDomainObjectToData(domainObject.contact),
            creationDate = domainObject.creationDate,
            bestQuality = domainObject.bestQuality,
