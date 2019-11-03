@@ -128,6 +128,7 @@ internal class UserRepositoryImplTest: RepositoryImplTest() {
     private fun buildTeam(token: String, mailPresident: String): Team {
         return Team(
             token = token,
+            season = "season",
             name = "name",
             president = buildTeamMember(mailPresident),
             homeStadium = buildStadium()

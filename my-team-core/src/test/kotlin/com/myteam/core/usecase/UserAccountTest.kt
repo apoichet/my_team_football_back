@@ -59,7 +59,7 @@ internal class UserAccountTest {
     fun `should log existing user`() {
         //Given
         val user = buildUser( "mail", "password")
-        user.teams = listOf(buildTeam("1"))
+        user.teams = listOf(buildTeam("1", "name", "season"))
         //When
         whenever(mockUserRepo.findByMail("mail")).thenReturn(user)
         val userExpected = sut.loginUser("mail", "password")
@@ -135,8 +135,8 @@ internal class UserAccountTest {
     fun `should create new team with token`() {
         //Given
         val user = buildUser("mail", "password")
-        val teamWithoutToken = buildTeam("")
-        val newTeam = buildTeam("token")
+        val teamWithoutToken = buildTeam("", "name", "season")
+        val newTeam = buildTeam("token", "name", "season")
         //When
         whenever(mockUserRepo.addTeam(user, teamWithoutToken)).thenReturn(newTeam)
         val teamReturn = sut.createTeam(user, teamWithoutToken)
@@ -146,13 +146,12 @@ internal class UserAccountTest {
     }
 
     @Test
-    fun `should reject creation team when user has already created a team with the same name`() {
+    fun `should reject creation team when user has already created a team with the same name and season`() {
         //Given
         val user = buildUser("mail", "password")
-        val userTeam = buildTeam("token")
-        userTeam.name = "name"
+        val userTeam = buildTeam("token", "name", "season")
         user.teams = listOf(userTeam)
-        val newTeam = buildTeam("")
+        val newTeam = buildTeam("", "name", "season")
         //When
         assertThrows<TeamAlreadyExists> {
             sut.createTeam(user, newTeam)
@@ -162,7 +161,7 @@ internal class UserAccountTest {
     @Test
     fun `should find existing team`() {
         //Given
-        val team = buildTeam("token")
+        val team = buildTeam("token", "name", "season")
         //When
         whenever(mockTeamRepo.findByToken("token")).thenReturn(team)
         val teamReturn = sut.findTeamByToken("token")
@@ -174,9 +173,9 @@ internal class UserAccountTest {
     @Test
     fun `should join existing team`() {
         //Given
-        val team = buildTeam("token")
+        val team = buildTeam("token", "name", "season")
         val player = buildPlayer("mail")
-        val teamWithNewPlayer = buildTeam("token")
+        val teamWithNewPlayer = buildTeam("token", "name", "season")
         teamWithNewPlayer.players = listOf(player)
         //When
         whenever(mockTeamRepo.addPlayer(team, player)).thenReturn(teamWithNewPlayer)
@@ -198,10 +197,11 @@ internal class UserAccountTest {
         )
     }
 
-    private fun buildTeam(token: String): Team {
+    private fun buildTeam(token: String, name: String, season: String): Team {
         return Team(
             token = token,
-            name = "name",
+            name = name,
+            season = season,
             creationDate = LocalDateTime.now(),
             licenceAmount = 0.0f,
             homeStadium = Stadium("name", Address("", "", "")),

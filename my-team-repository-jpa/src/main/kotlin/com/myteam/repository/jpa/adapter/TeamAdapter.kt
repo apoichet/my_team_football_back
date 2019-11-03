@@ -16,6 +16,7 @@ class TeamAdapter:
         return com.myteam.repository.jpa.entities.Team(
             id = domainObject.token,
             creationDate = domainObject.creationDate,
+            season = domainObject.season,
             name = domainObject.name,
             president = teamMemberAdapter.convertDomainObjectToData(domainObject.president),
             coach = domainObject.coach?.let {teamMemberAdapter.convertDomainObjectToData(it)},
@@ -33,6 +34,7 @@ class TeamAdapter:
         return Team(
             token = data.id,
             creationDate = data.creationDate,
+            season = data.season,
             name = data.name,
             president = teamMemberAdapter.convertDataToDomainObject(data.president),
             coach = data.coach?.let {teamMemberAdapter.convertDataToDomainObject(it)},

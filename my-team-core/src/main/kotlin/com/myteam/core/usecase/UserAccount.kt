@@ -47,11 +47,14 @@ UserRegister, UserTeamRegister{
     }
 
     override fun createTeam(user: User, newTeam: Team): Team? {
-        val teamAlredyExists = user.teams.count {
-            it.name === newTeam.name
+        val teamAlreadyExists = user.teams.count {
+            it.name === newTeam.name && it.season === newTeam.season
         } > 0
-        if (teamAlredyExists) {
-            throw TeamAlreadyExists("User ${user.contact.mail} has already created a team with name ${newTeam.name}")
+        if (teamAlreadyExists) {
+            throw TeamAlreadyExists("User ${user.contact.mail} " +
+                    "has already created a team with name ${newTeam.name} and season " +
+                    newTeam.season
+            )
         }
         return userRepository.addTeam(user, newTeam)
     }

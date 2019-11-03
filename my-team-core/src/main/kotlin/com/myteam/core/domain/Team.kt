@@ -5,6 +5,7 @@ import java.time.LocalDateTime
 class Team(
     var token: String = "",
     val creationDate: LocalDateTime = LocalDateTime.now(),
+    val season: String,
     var name: String,
     var logo: String? = null,
     var colors: List<String> = emptyList(),

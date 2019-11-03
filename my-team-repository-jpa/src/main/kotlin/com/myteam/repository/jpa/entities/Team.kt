@@ -15,6 +15,9 @@ data class Team (
     val creationDate: LocalDateTime,
 
     @Column(nullable = false)
+    val season: String,
+
+    @Column(nullable = false)
     val name: String,
 
     @Column(nullable = true)
