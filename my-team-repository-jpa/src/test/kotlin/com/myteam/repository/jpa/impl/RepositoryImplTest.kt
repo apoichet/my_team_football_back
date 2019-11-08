@@ -1,6 +1,7 @@
 package com.myteam.repository.jpa.impl
 
 import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.BeforeEach
 import java.io.BufferedReader
 import java.io.FileReader
 import java.sql.DriverManager
@@ -14,17 +15,16 @@ import javax.persistence.Persistence
 
 open class RepositoryImplTest {
 
-    private val driver = "org.h2.Driver"
-    private val url = "jdbc:h2:mem:my_team"
-    private val user = ""
-    private val password = ""
-    private val dropDBscriptPath = "src/test/resources/my_team-drop.ddl"
-    private val createDBscriptPath = "src/test/resources/my_team-create.ddl"
-
-    private val dropSequence = "DROP TABLE SEQUENCE"
-
-    private val emf: EntityManagerFactory = Persistence.createEntityManagerFactory("my_team_pu_test")
+    private val dataSourceName = "my_team_pu_test"
+    private val emf: EntityManagerFactory = Persistence.createEntityManagerFactory(dataSourceName)
     open val em: EntityManager = emf.createEntityManager()
+
+    private val driver = emf.properties["javax.persistence.jdbc.driver"] as String
+    private val url = emf.properties["javax.persistence.jdbc.url"] as String
+    private val user = emf.properties["javax.persistence.jdbc.user"]?.toString() ?: ""
+    private val password = emf.properties["javax.persistence.jdbc.password"]?.toString() ?: ""
+    private val dropDBscriptPath = emf.properties["javax.persistence.schema-generation.scripts.drop-target"] as String
+    private val createDBscriptPath = emf.properties["javax.persistence.schema-generation.scripts.create-target"] as String
 
     @AfterEach
     fun clearDataBase() {
@@ -34,7 +34,7 @@ open class RepositoryImplTest {
         try {
             getStatement(connectionProps)?.let {
                 executeScript(dropDBscriptPath, it)
-                it.execute(dropSequence)
+                it.execute("DROP TABLE SEQUENCE")
                 executeScript(createDBscriptPath, it)
             }
         } catch (ex: SQLException) {
