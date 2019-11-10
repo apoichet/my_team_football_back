@@ -1,0 +1,34 @@
+buildscript {
+    ext.ktor_version = '1.2.4'
+    ext.jackson_version = '2.9.8'
+    repositories {
+        jcenter()
+    }
+}
+
+apply plugin: 'application'
+
+mainClassName = "io.ktor.server.netty.DevelopmentEngine"
+
+
+
+kotlin {
+    experimental {
+        coroutines "enable"
+    }
+}
+
+dependencies {
+    implementation project(':my-team-core')
+    implementation project(':my-team-repository-jpa')
+    compile "io.ktor:ktor-server-core:$ktor_version"
+    compile "io.ktor:ktor-server-netty:$ktor_version"
+    compile "io.ktor:ktor-jackson:$ktor_version"
+    compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jackson_version"
+    compile("ch.qos.logback:logback-classic:1.2.3")
+}
+
+
+
+
+

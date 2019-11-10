@@ -2,4 +2,5 @@ rootProject.name = 'my-team'
 
 include "my-team-core"
 include "my-team-repository-jpa"
+include "my-team-api-ktor"
 

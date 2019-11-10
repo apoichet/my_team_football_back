@@ -6,6 +6,6 @@ dependencies {
     implementation project(':my-team-core')
     compile "org.eclipse.persistence:org.eclipse.persistence.jpa:2.7.3"
     testCompile "com.h2database:h2:1.4.196"
-    testCompile "postgresql:postgresql:9.0-801.jdbc4"
+    compile "postgresql:postgresql:9.0-801.jdbc4"
 }
 
