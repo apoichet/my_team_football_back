@@ -76,7 +76,6 @@ class UserRepositoryImpl(val em: EntityManager): UserRepository {
             return query.singleResult as(com.myteam.repository.jpa.entities.User)
         }
         catch (e: NoResultException) {
-            System.out.println("User with mail '$mail' does not exist")
             return null
         }
     }
