@@ -13,19 +13,48 @@ import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import org.slf4j.*
 import java.lang.Exception
+import javax.persistence.*
 
 
 fun Application.main() {
 
     val logger = LoggerFactory.getLogger("Application")
+    val dataSource = getDataSource("my_team_pu")
 
     install(DefaultHeaders)
     install(Compression)
+    routing(logger, dataSource)
+    installMapper()
+    manageException(logger)
+}
+
+private fun Application.routing(
+    logger: Logger,
+    dataSource: EntityManager
+) {
     install(Routing) {
         route("/myteam") {
-            userAccount(logger)
+            userRegister(logger, dataSource)
         }
     }
+}
+
+private fun Application.manageException(logger: Logger) {
+    install(StatusPages) {
+        exception<Exception> { cause ->
+            var httpCodeResponse = HttpStatusCode.InternalServerError
+            when (cause) {
+                is UserMailAlreadyExist -> {
+                    httpCodeResponse = HttpStatusCode.Conflict
+                }
+            }
+            logger.error(cause.message)
+            call.respond(httpCodeResponse, cause.message ?: "")
+        }
+    }
+}
+
+private fun Application.installMapper() {
     install(ContentNegotiation) {
         register(ContentType.Application.Json, JacksonConverter())
         jackson {
@@ -37,18 +66,11 @@ fun Application.main() {
             registerModule(JavaTimeModule())
         }
     }
-    install(StatusPages) {
-        exception<Exception> { cause ->
-            var httpCodeResponse = HttpStatusCode.InternalServerError
-            when(cause) {
-                is UserMailAlreadyExist -> {
-                    httpCodeResponse = HttpStatusCode.Conflict
-                }
-            }
-            logger.error(cause.message)
-            call.respond(httpCodeResponse, cause.message ?:"")
-        }
-    }
+}
+
+fun getDataSource(dataSourceName: String): EntityManager {
+    val emf: EntityManagerFactory = Persistence.createEntityManagerFactory(dataSourceName)
+    return emf.createEntityManager()
 }
 
 fun main(args: Array<String>) {
