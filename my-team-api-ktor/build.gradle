@@ -1,16 +1,11 @@
 buildscript {
     ext.ktor_version = '1.2.4'
     ext.jackson_version = '2.9.8'
-    repositories {
-        jcenter()
-    }
 }
 
 apply plugin: 'application'
 
 mainClassName = "io.ktor.server.netty.DevelopmentEngine"
-
-
 
 kotlin {
     experimental {
@@ -26,7 +21,11 @@ dependencies {
     compile "io.ktor:ktor-jackson:$ktor_version"
     compile "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jackson_version"
     compile("ch.qos.logback:logback-classic:1.2.3")
+    testCompile("io.ktor:ktor-server-test-host:$ktor_version") {
+        exclude group: 'junit', module: 'junit' //Ktor server test has embeded Junit 4.12, we want to use Junit 5
+    }
 }
+
 
 
 

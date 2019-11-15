@@ -73,7 +73,7 @@ fun getDataSource(dataSourceName: String): EntityManager {
     return emf.createEntityManager()
 }
 
-fun main(args: Array<String>) {
+fun main() {
     embeddedServer(Netty, 8080, watchPaths = listOf("my-team-api-ktor"), module = Application::main).start()
 }
 
