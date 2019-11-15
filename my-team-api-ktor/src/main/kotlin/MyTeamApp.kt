@@ -37,21 +37,13 @@ fun Application.mainWithDependencies(
             userLogin(userLogin)
         }
     }
-
-
 }
 
 private fun Application.manageException(logger: Logger) {
     install(StatusPages) {
         exception<Exception> { cause ->
-            var httpCodeResponse = HttpStatusCode.InternalServerError
-            when (cause) {
-                is UserMailAlreadyExist -> {
-                    httpCodeResponse = HttpStatusCode.Conflict
-                }
-            }
             logger.error(cause.message)
-            call.respond(httpCodeResponse, cause.message ?: "")
+            call.respond(HttpStatusCode.InternalServerError, cause.message ?: "no message exception")
         }
     }
 }
