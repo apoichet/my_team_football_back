@@ -1,7 +1,6 @@
 package com.myteam.application
 
-import com.myteam.core.domain.Contact
-import com.myteam.core.domain.User
+import com.myteam.core.domain.*
 
 interface UserRegister {
 

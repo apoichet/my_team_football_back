@@ -2,7 +2,11 @@ import com.fasterxml.jackson.core.util.*
 import com.fasterxml.jackson.databind.*
 import com.fasterxml.jackson.datatype.jsr310.*
 import com.myteam.api.rest.*
+import com.myteam.application.*
 import com.myteam.core.exception.*
+import com.myteam.core.usecase.*
+import com.myteam.infra.*
+import com.myteam.repository.jpa.impl.*
 import io.ktor.application.*
 import io.ktor.features.*
 import io.ktor.http.*
@@ -16,27 +20,25 @@ import java.lang.Exception
 import javax.persistence.*
 
 
-fun Application.main() {
-
-    val logger = LoggerFactory.getLogger("Application")
-    val dataSource = getDataSource("my_team_pu")
-
+fun Application.mainWithDependencies(
+    userRegister: UserRegister? = null,
+    userLogin: UserLogin? = null
+) {
     install(DefaultHeaders)
     install(Compression)
-    routing(logger, dataSource)
     installMapper()
-    manageException(logger)
-}
 
-private fun Application.routing(
-    logger: Logger,
-    dataSource: EntityManager
-) {
+    val logger = LoggerFactory.getLogger("Application")
+    manageException(logger)
+
     install(Routing) {
         route("/myteam") {
-            userRegister(logger, dataSource)
+            userRegister(logger, userRegister)
+            userLogin(userLogin)
         }
     }
+
+
 }
 
 private fun Application.manageException(logger: Logger) {
@@ -71,6 +73,18 @@ private fun Application.installMapper() {
 fun getDataSource(dataSourceName: String): EntityManager {
     val emf: EntityManagerFactory = Persistence.createEntityManagerFactory(dataSourceName)
     return emf.createEntityManager()
+}
+
+fun Application.main() {
+    val dataSource = getDataSource("my_team_pu")
+
+    val userRepo: UserRepository = UserRepositoryImpl(dataSource)
+    val teamRepo: TeamRepository = TeamRepositoryImpl(dataSource)
+
+    val userRegister: UserRegister = UserAccount(userRepo, teamRepo)
+    val userLogin: UserLogin = UserAccount(userRepo, teamRepo)
+
+    mainWithDependencies(userRegister, userLogin)
 }
 
 fun main() {

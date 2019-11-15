@@ -13,15 +13,11 @@ import io.ktor.routing.*
 import org.slf4j.*
 import javax.persistence.*
 
-fun Route.userRegister(logger: Logger, dataSource: EntityManager) {
-
-    val userRepo: UserRepository = UserRepositoryImpl(dataSource)
-    val teamRepo: TeamRepository = TeamRepositoryImpl(dataSource)
-    val userRegister: UserRegister = UserAccount(userRepo, teamRepo)
+fun Route.userRegister(logger: Logger, userRegister: UserRegister?) {
 
     post("user/create") {
         val newUser = call.receive<User>()
-        userRegister.createAccount(newUser)?.let {
+        userRegister!!.createAccount(newUser)?.let {
             logger.info("User ${newUser.contact.mail} created with success")
             call.respond(HttpStatusCode.Created, it)
         } ?: call.respond(HttpStatusCode.Accepted)

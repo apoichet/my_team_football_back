@@ -1,17 +1,12 @@
 buildscript {
     ext.ktor_version = '1.2.4'
     ext.jackson_version = '2.9.8'
+    ext.mockk_version = "1.9.3"
 }
 
 apply plugin: 'application'
 
 mainClassName = "io.ktor.server.netty.DevelopmentEngine"
-
-kotlin {
-    experimental {
-        coroutines "enable"
-    }
-}
 
 dependencies {
     implementation project(':my-team-core')
@@ -24,6 +19,7 @@ dependencies {
     testCompile("io.ktor:ktor-server-test-host:$ktor_version") {
         exclude group: 'junit', module: 'junit' //Ktor server test has embeded Junit 4.12, we want to use Junit 5
     }
+    testCompile "io.mockk:mockk:$mockk_version" //Ktor prefers mockk to mock :/
 }
 
 
