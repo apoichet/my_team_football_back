@@ -1,7 +1,6 @@
 package com.myteam.core.usecase
 
-import com.myteam.application.UserRegister
-import com.myteam.application.UserTeamRegister
+import com.myteam.application.*
 import com.myteam.core.domain.Contact
 import com.myteam.core.domain.Player
 import com.myteam.core.domain.Team
@@ -13,7 +12,7 @@ import com.myteam.infra.UserRepository
 
 class UserAccount(private val userRepository: UserRepository,
                   private val teamRepository: TeamRepository) :
-UserRegister, UserTeamRegister{
+UserRegister, UserLogin, UserProfile, UserTeamRegister{
 
     override fun createAccount(newUser: User): User? {
         userRepository.findByMail(newUser.contact.mail)?.let {

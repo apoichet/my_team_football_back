@@ -3,6 +3,7 @@ package com.myteam.api.rest
 import com.myteam.application.*
 import com.myteam.core.domain.*
 import com.myteam.core.usecase.*
+import com.myteam.infra.*
 import com.myteam.repository.jpa.impl.*
 import io.ktor.application.*
 import io.ktor.http.*
@@ -14,8 +15,8 @@ import javax.persistence.*
 
 fun Route.userRegister(logger: Logger, dataSource: EntityManager) {
 
-    val userRepo = UserRepositoryImpl(dataSource)
-    val teamRepo = TeamRepositoryImpl(dataSource)
+    val userRepo: UserRepository = UserRepositoryImpl(dataSource)
+    val teamRepo: TeamRepository = TeamRepositoryImpl(dataSource)
     val userRegister: UserRegister = UserAccount(userRepo, teamRepo)
 
     post("user/create") {
