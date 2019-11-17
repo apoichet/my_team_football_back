@@ -1,9 +1,9 @@
 import com.fasterxml.jackson.core.util.*
 import com.fasterxml.jackson.databind.*
 import com.fasterxml.jackson.datatype.jsr310.*
+import com.fasterxml.jackson.module.kotlin.*
 import com.myteam.api.rest.*
 import com.myteam.application.*
-import com.myteam.core.exception.*
 import com.myteam.core.usecase.*
 import com.myteam.infra.*
 import com.myteam.repository.jpa.impl.*
@@ -16,7 +16,6 @@ import io.ktor.routing.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import org.slf4j.*
-import java.lang.Exception
 import javax.persistence.*
 
 
@@ -50,15 +49,7 @@ private fun Application.manageException(logger: Logger) {
 
 private fun Application.installMapper() {
     install(ContentNegotiation) {
-        register(ContentType.Application.Json, JacksonConverter())
-        jackson {
-            configure(SerializationFeature.INDENT_OUTPUT, true)
-            setDefaultPrettyPrinter(DefaultPrettyPrinter().apply {
-                indentArraysWith(DefaultPrettyPrinter.FixedSpaceIndenter.instance)
-                indentObjectsWith(DefaultIndenter("  ", "\n"))
-            })
-            registerModule(JavaTimeModule())
-        }
+        register(ContentType.Application.Json, JacksonConverter(JsonMapper.defaultMapper))
     }
 }
 
@@ -81,6 +72,19 @@ fun Application.main() {
 
 fun main() {
     embeddedServer(Netty, 8080, watchPaths = listOf("my-team-api-ktor"), module = Application::main).start()
+}
+
+object JsonMapper {
+    val defaultMapper: ObjectMapper = jacksonObjectMapper()
+
+    init {
+        defaultMapper.configure(SerializationFeature.INDENT_OUTPUT, true)
+        defaultMapper.setDefaultPrettyPrinter(DefaultPrettyPrinter().apply {
+            indentArraysWith(DefaultPrettyPrinter.FixedSpaceIndenter.instance)
+            indentObjectsWith(DefaultIndenter("  ", "\n"))
+        })
+        defaultMapper.registerModule(JavaTimeModule())
+    }
 }
 
 

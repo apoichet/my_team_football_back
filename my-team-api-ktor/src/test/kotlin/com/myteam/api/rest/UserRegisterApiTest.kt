@@ -1,10 +1,15 @@
 package com.myteam.api.rest
 
+import JsonMapper
 import com.fasterxml.jackson.module.kotlin.*
 import com.myteam.application.*
 import com.myteam.core.domain.*
 import com.myteam.core.exception.*
+import io.ktor.application.*
+import io.ktor.features.*
+import io.ktor.features.AutoHeadResponse.install
 import io.ktor.http.*
+import io.ktor.jackson.*
 import io.ktor.server.testing.*
 import io.mockk.*
 import io.mockk.impl.annotations.*
@@ -20,7 +25,7 @@ internal class UserRegisterApiTest {
 
     @RelaxedMockK
     private lateinit var mockUserRegister: UserRegister
-    private val mapper = jacksonObjectMapper()
+    private val mapper = JsonMapper.defaultMapper
     private val newUserPath = "/basic_new_user.json"
 
     @Test
@@ -48,6 +53,7 @@ internal class UserRegisterApiTest {
             setBody(newUserJson)
         }.apply {
             assertEquals(HttpStatusCode.Accepted, this.response.status())
+            assertNull(this.response.content)
         }
     }
 
@@ -61,12 +67,10 @@ internal class UserRegisterApiTest {
             setBody(newUserJson)
         }.apply {
             assertEquals(HttpStatusCode.Conflict, this.response.status())
+            assertNull(this.response.content)
         }
     }
 
-    /**
-     * Private method used to reduce boilerplate when testing the application.
-     */
     private fun testApp(callback: TestApplicationEngine.() -> Unit) {
         withTestApplication({ mainWithDependencies(mockUserRegister) }) { callback() }
     }
