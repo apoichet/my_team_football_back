@@ -118,6 +118,18 @@ internal class UserAccountTest {
     }
 
     @Test
+    fun `should reject modify user contact with mail already exists`() {
+        //Given
+        val existingUser = buildUser("mail", "password")
+        val contactModified = buildContact("mail")
+        //Then
+        whenever(mockUserRepo.findByMail(contactModified.mail)).thenReturn(existingUser)
+        assertThrows<UserMailAlreadyExist> {
+            sut.modifyContact(existingUser, contactModified)
+        }
+    }
+
+    @Test
     fun `should let modify user password`() {
         //Given
         val existingUser = buildUser( "mail", "password")

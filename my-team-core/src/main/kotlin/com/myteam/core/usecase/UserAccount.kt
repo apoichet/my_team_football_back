@@ -34,6 +34,11 @@ UserRegister, UserLogin, UserProfile, UserTeamRegister{
     }
 
     override fun modifyContact(user: User, newContact: Contact): User? {
+        if(newContact.mail == user.contact.mail) {
+            userRepository.findByMail(newContact.mail)?.let {
+                throw UserMailAlreadyExist("User mail ${newContact.mail} already exists")
+            }
+        }
         return userRepository.updateContact(user, newContact)
     }
 
