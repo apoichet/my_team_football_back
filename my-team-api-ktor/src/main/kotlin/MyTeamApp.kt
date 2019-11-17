@@ -16,12 +16,14 @@ import io.ktor.routing.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import org.slf4j.*
+import java.text.*
 import javax.persistence.*
 
 
 fun Application.mainWithDependencies(
     userRegister: UserRegister? = null,
-    userLogin: UserLogin? = null
+    userLogin: UserLogin? = null,
+    userProfile: UserProfile? = null
 ) {
     install(DefaultHeaders)
     install(Compression)
@@ -34,6 +36,7 @@ fun Application.mainWithDependencies(
         route("/myteam") {
             userRegister(logger, userRegister)
             userLogin(userLogin)
+            userProfile(logger, userProfile)
         }
     }
 }
@@ -63,11 +66,12 @@ fun Application.main() {
 
     val userRepo: UserRepository = UserRepositoryImpl(dataSource)
     val teamRepo: TeamRepository = TeamRepositoryImpl(dataSource)
+    val userAccount = UserAccount(userRepo, teamRepo)
 
-    val userRegister: UserRegister = UserAccount(userRepo, teamRepo)
-    val userLogin: UserLogin = UserAccount(userRepo, teamRepo)
-
-    mainWithDependencies(userRegister, userLogin)
+    mainWithDependencies(
+        userRegister = userAccount,
+        userLogin = userAccount,
+        userProfile = userAccount)
 }
 
 fun main() {
@@ -83,6 +87,8 @@ object JsonMapper {
             indentArraysWith(DefaultPrettyPrinter.FixedSpaceIndenter.instance)
             indentObjectsWith(DefaultIndenter("  ", "\n"))
         })
+
+        defaultMapper.dateFormat = SimpleDateFormat("dd/MM/yyyy hh:mm")
         defaultMapper.registerModule(JavaTimeModule())
     }
 }

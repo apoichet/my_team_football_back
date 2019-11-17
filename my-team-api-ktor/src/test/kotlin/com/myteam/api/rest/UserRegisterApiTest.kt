@@ -5,11 +5,7 @@ import com.fasterxml.jackson.module.kotlin.*
 import com.myteam.application.*
 import com.myteam.core.domain.*
 import com.myteam.core.exception.*
-import io.ktor.application.*
-import io.ktor.features.*
-import io.ktor.features.AutoHeadResponse.install
 import io.ktor.http.*
-import io.ktor.jackson.*
 import io.ktor.server.testing.*
 import io.mockk.*
 import io.mockk.impl.annotations.*
@@ -29,7 +25,7 @@ internal class UserRegisterApiTest {
     private val newUserPath = "/basic_new_user.json"
 
     @Test
-    fun `should respond with 201 when create new user`() = testApp {
+    fun `should respond 201 when create new user`() = testApp {
         val newUserJson =  this.javaClass.getResource(newUserPath).readText(Charsets.UTF_8)
         val newUser = mapper.readValue<User>(newUserJson)
         every { mockUserRegister.createAccount(any()) } returns newUser
@@ -44,7 +40,7 @@ internal class UserRegisterApiTest {
     }
 
     @Test
-    fun `should respond with 202 when no response return`() = testApp {
+    fun `should respond 202 when no response return`() = testApp {
         val newUserJson =  this.javaClass.getResource(newUserPath).readText(Charsets.UTF_8)
         every { mockUserRegister.createAccount(any()) } returns null
         handleRequest(HttpMethod.Post, "/myteam/user/create") {
@@ -58,7 +54,7 @@ internal class UserRegisterApiTest {
     }
 
     @Test
-    fun `should respond with 409 when user mail already exists`() = testApp {
+    fun `should respond 409 when user mail already exists`() = testApp {
         val newUserJson =  this.javaClass.getResource(newUserPath).readText(Charsets.UTF_8)
         every { mockUserRegister.createAccount(any()) } throws(UserMailAlreadyExist("user mail already exists"))
         handleRequest(HttpMethod.Post, "/myteam/user/create") {
