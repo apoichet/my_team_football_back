@@ -4,6 +4,7 @@ import JsonMapper
 import com.fasterxml.jackson.module.kotlin.*
 import com.myteam.application.*
 import com.myteam.core.domain.*
+import com.myteam.core.exception.*
 import io.ktor.http.*
 import io.ktor.server.testing.*
 import io.mockk.*
@@ -62,6 +63,42 @@ internal class UserProfileApiTest {
             assertEquals(HttpStatusCode.OK, this.response.status())
             val userModified = mapper.readValue(this.response.content, User::class.java)
             assertEquals(userModified.password, user.password)
+        }
+    }
+
+    @Test
+    fun `should respond 200 when modify contact`() = testApp {
+        val userWithNewContactJson = this.javaClass.getResource("/user_with_new_contact.json").readText(Charsets.UTF_8)
+        val userWithNewContact = mapper.readValue<ModifyContactWrapper>(userWithNewContactJson)
+        val user = userWithNewContact.user
+        user.contact = userWithNewContact.newContact
+        every { mockUserProfile.modifyContact(any(), any()) } returns user
+        handleRequest ( HttpMethod.Patch, "/myteam/user/profile/update/contact" ) {
+            addHeader("Accept", "application/json")
+            addHeader("Content-Type", "application/json")
+            setBody(userWithNewContactJson)
+        }.apply {
+            assertEquals(HttpStatusCode.OK, this.response.status())
+            val userModified = mapper.readValue(this.response.content, User::class.java)
+            assertEquals(userModified.contact.mail, user.contact.mail)
+            assertEquals(userModified.contact.firstName, user.contact.firstName)
+        }
+    }
+
+    @Test
+    fun `should respond 409 when modify contact with mail already exists`() = testApp {
+        val userWithNewContactJson = this.javaClass.getResource("/user_with_new_contact.json").readText(Charsets.UTF_8)
+        val userWithNewContact = mapper.readValue<ModifyContactWrapper>(userWithNewContactJson)
+        val user = userWithNewContact.user
+        user.contact = userWithNewContact.newContact
+        every { mockUserProfile.modifyContact(any(), any()) } throws UserMailAlreadyExist("user mail already exists")
+        handleRequest ( HttpMethod.Patch, "/myteam/user/profile/update/contact" ) {
+            addHeader("Accept", "application/json")
+            addHeader("Content-Type", "application/json")
+            setBody(userWithNewContactJson)
+        }.apply {
+            assertEquals(HttpStatusCode.Conflict, this.response.status())
+            assertNull(this.response.content)
         }
     }
 

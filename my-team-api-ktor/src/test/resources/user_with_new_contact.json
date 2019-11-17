@@ -1,0 +1,23 @@
+{
+    "user" : {
+        "contact": {
+            "mail": "a.poichet@gmail.com",
+            "firstName": "Alexandre",
+            "lastName": "Poichet",
+            "birthDate": "1970-01-01",
+            "phone": "",
+            "addresses": []
+        },
+        "password": "password",
+        "teams": [],
+        "creationDate": "2019-11-17T18:55:18.897"
+    },
+    "newContact" : {
+        "mail": "t.poichet@gmail.com",
+        "firstName": "Tommy",
+        "lastName": "Poichet",
+        "birthDate": "1970-01-01",
+        "phone": "",
+        "addresses": []
+    }
+}
