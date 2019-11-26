@@ -6,7 +6,7 @@ interface UserProfile {
 
     fun closeAccount(user: User): Boolean
 
-    fun modifyContact(user: User, newContact: Contact): User?
+    fun modifyProfile(user: User, newProfile: UserTeam): User?
 
     fun modifyPassword(user: User, newPassword: String): User?
 

@@ -35,11 +35,11 @@ fun Route.userProfile(logger: Logger, userProfile: UserProfile?) {
                 }
             }
 
-            patch("contact") {
-                val receive = call.receive<ModifyContactWrapper>()
+            patch("profile") {
+                val receive = call.receive<ModifyProfileWrapper>()
                 try {
-                    userProfile!!.modifyContact(receive.user, receive.newContact)?.let {
-                        logger.info("User with mail '${receive.user.userTeam.contact.mail}' modify contact")
+                    userProfile!!.modifyProfile(receive.user, receive.newProfile)?.let {
+                        logger.info("User with mail '${receive.user.userTeam.contact.mail}' modify profile")
                         call.respond(HttpStatusCode.OK, it)
                     }
                 }
@@ -53,4 +53,4 @@ fun Route.userProfile(logger: Logger, userProfile: UserProfile?) {
 
 class ModifyPasswordWrapper(val user: User, val newPassword: String)
 
-class ModifyContactWrapper(val user: User, val newContact: Contact)
+class ModifyProfileWrapper(val user: User, val newProfile: UserTeam)

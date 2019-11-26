@@ -67,35 +67,35 @@ internal class UserProfileApiTest {
     }
 
     @Test
-    fun `should respond 200 when modify contact`() = testApp {
-        val userWithNewContactJson = this.javaClass.getResource("/user_with_new_contact.json").readText(Charsets.UTF_8)
-        val userWithNewContact = mapper.readValue<ModifyContactWrapper>(userWithNewContactJson)
-        val user = userWithNewContact.user
-        user.userTeam.contact = userWithNewContact.newContact
-        every { mockUserProfile.modifyContact(any(), any()) } returns user
-        handleRequest ( HttpMethod.Patch, "/myteam/user/profile/update/contact" ) {
+    fun `should respond 200 when modify profile`() = testApp {
+        val userWithNewProfileJson = this.javaClass.getResource("/user_with_new_contact.json").readText(Charsets.UTF_8)
+        val userWithNewProfile = mapper.readValue<ModifyProfileWrapper>(userWithNewProfileJson)
+        val user = userWithNewProfile.user
+        user.userTeam = userWithNewProfile.newProfile
+        every { mockUserProfile.modifyProfile(any(), any()) } returns user
+        handleRequest ( HttpMethod.Patch, "/myteam/user/profile/update/profile" ) {
             addHeader("Accept", "application/json")
             addHeader("Content-Type", "application/json")
-            setBody(userWithNewContactJson)
+            setBody(userWithNewProfileJson)
         }.apply {
             assertEquals(HttpStatusCode.OK, this.response.status())
             val userModified = mapper.readValue(this.response.content, User::class.java)
             assertEquals(userModified.userTeam.contact.mail, user.userTeam.contact.mail)
-            assertEquals(userModified.userTeam.contact.firstName, user.userTeam.contact.firstName)
+            assertEquals(userModified.userTeam.firstName, user.userTeam.firstName)
         }
     }
 
     @Test
     fun `should respond 409 when modify contact with mail already exists`() = testApp {
-        val userWithNewContactJson = this.javaClass.getResource("/user_with_new_contact.json").readText(Charsets.UTF_8)
-        val userWithNewContact = mapper.readValue<ModifyContactWrapper>(userWithNewContactJson)
-        val user = userWithNewContact.user
-        user.userTeam.contact = userWithNewContact.newContact
-        every { mockUserProfile.modifyContact(any(), any()) } throws UserMailAlreadyExist("user mail already exists")
-        handleRequest ( HttpMethod.Patch, "/myteam/user/profile/update/contact" ) {
+        val userWithNewProfileJson = this.javaClass.getResource("/user_with_new_contact.json").readText(Charsets.UTF_8)
+        val userWithNewProfile = mapper.readValue<ModifyProfileWrapper>(userWithNewProfileJson)
+        val user = userWithNewProfile.user
+        user.userTeam = userWithNewProfile.newProfile
+        every { mockUserProfile.modifyProfile(any(), any()) } throws UserMailAlreadyExist("user mail already exists")
+        handleRequest ( HttpMethod.Patch, "/myteam/user/profile/update/profile" ) {
             addHeader("Accept", "application/json")
             addHeader("Content-Type", "application/json")
-            setBody(userWithNewContactJson)
+            setBody(userWithNewProfileJson)
         }.apply {
             assertEquals(HttpStatusCode.Conflict, this.response.status())
             assertNull(this.response.content)

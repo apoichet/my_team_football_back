@@ -23,7 +23,7 @@ internal class UserLoginApiTest {
 
     @Test
     fun `should respond 200 with user login`() = testApp {
-        val existingUser = User(password = "password", userTeam =  UserTeam(contact = Contact(firstName = "firstName", lastName = "lastName", mail = "mail")))
+        val existingUser = User(password = "password", userTeam =  UserTeam(firstName = "firstName", lastName = "lastName", contact = Contact(mail = "mail")))
         every { mockUserLogin.loginUser(any(), any()) } returns existingUser
         handleRequest ( HttpMethod.Post, "/myteam/user/login" ) {
             addHeader("Accept", "application/json")

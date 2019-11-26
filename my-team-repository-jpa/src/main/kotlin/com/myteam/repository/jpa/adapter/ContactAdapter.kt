@@ -10,8 +10,6 @@ class ContactAdapter: RepositoryAdapter<Contact, com.myteam.repository.jpa.entit
         return com.myteam.repository.jpa.entities.Contact(
             id = null,
             mail = domainObject.mail,
-            lastName = domainObject.lastName,
-            firstName = domainObject.firstName,
             phoneNumber = domainObject.phone,
             addresses = domainObject.addresses.map { a ->  addressAdapter.convertDomainObjectToData(a)}
         )
@@ -20,8 +18,6 @@ class ContactAdapter: RepositoryAdapter<Contact, com.myteam.repository.jpa.entit
     override fun convertDataToDomainObject(data: com.myteam.repository.jpa.entities.Contact): Contact {
         return Contact(
             mail = data.mail,
-            lastName = data.lastName,
-            firstName = data.firstName,
             phone = data.phoneNumber,
             addresses = data.addresses.map { a ->  addressAdapter.convertDataToDomainObject(a)}
         )

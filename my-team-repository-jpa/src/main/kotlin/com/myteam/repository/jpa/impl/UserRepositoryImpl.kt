@@ -8,7 +8,7 @@ import javax.persistence.*
 class UserRepositoryImpl(val em: EntityManager): UserRepository {
 
     private val userAdapater = UserAdapter()
-    private val contactAdapter = ContactAdapter()
+    private val userTeamAdapater = UserTeamAdapter()
     private val teamAdapter = TeamAdapter()
 
     override fun create(newUser: User): User {
@@ -28,10 +28,9 @@ class UserRepositoryImpl(val em: EntityManager): UserRepository {
         return userToModified
     }
 
-    override fun updateContact(userToModified: User, newContact: Contact): User {
+    override fun updateProfile(userToModified: User, newProfile: UserTeam): User {
         find(userToModified.userTeam.contact.mail)?.let {
-            val userTeamCopy = it.userTeam.copy(contact = contactAdapter.convertDomainObjectToData(newContact))
-            val userCopy = it.copy(userTeam = userTeamCopy)
+            val userCopy = it.copy(userTeam = userTeamAdapater.convertDomainObjectToData(newProfile))
             em.merge(userCopy)
             return userAdapater.convertDataToDomainObject(userCopy)
         }

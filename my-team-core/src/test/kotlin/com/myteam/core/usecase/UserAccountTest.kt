@@ -103,29 +103,29 @@ internal class UserAccountTest {
     }
 
     @Test
-    fun `should let modify user contact`() {
+    fun `should let modify user profile`() {
         //Given
         val existingUser = buildUser("mail", "password")
-        val contactModified = buildContact("new_mail")
+        val profileModified = buildUserTeam("new_mail")
         val userModified = buildUser("new_mail", "password")
-        userModified.userTeam.contact = contactModified
+        userModified.userTeam = profileModified
         //When
-        whenever(mockUserRepo.updateContact(existingUser, contactModified)).thenReturn(userModified)
-        val userReturn = sut.modifyContact(existingUser, contactModified)
+        whenever(mockUserRepo.updateProfile(existingUser, profileModified)).thenReturn(userModified)
+        val userReturn = sut.modifyProfile(existingUser, profileModified)
         //Then
-        verify(mockUserRepo).updateContact(existingUser, contactModified)
-        assertEquals(contactModified, userReturn?.userTeam?.contact)
+        verify(mockUserRepo).updateProfile(existingUser, profileModified)
+        assertEquals(profileModified.contact, userReturn?.userTeam?.contact)
     }
 
     @Test
-    fun `should reject modify user contact with mail already exists`() {
+    fun `should reject modify user profile with mail already exists`() {
         //Given
         val existingUser = buildUser("mail", "password")
-        val contactModified = buildContact("mail")
+        val profileModified = buildUserTeam("mail")
         //Then
-        whenever(mockUserRepo.findByMail(contactModified.mail)).thenReturn(existingUser)
+        whenever(mockUserRepo.findByMail(profileModified.contact.mail)).thenReturn(existingUser)
         assertThrows<UserMailAlreadyExist> {
-            sut.modifyContact(existingUser, contactModified)
+            sut.modifyProfile(existingUser, profileModified)
         }
     }
 
@@ -199,17 +199,21 @@ internal class UserAccountTest {
     }
 
     private fun buildContact(mail: String): Contact {
-        return Contact(mail, "firstname", "lastname")
+        return Contact(mail)
     }
 
     private fun buildUserTeam(mail: String): UserTeam {
         return UserTeam(
+            firstName = "firstname",
+            lastName = "lastname",
             contact = buildContact(mail)
         )
     }
 
     private fun buildPlayer(mail : String): UserTeam {
         return UserTeam(
+            firstName = "firstname",
+            lastName = "lastname",
             contact = buildContact(mail),
             playerInfo = PlayerInfo(
                 strongFoot = PlayerFoot.BOTH,

@@ -66,13 +66,17 @@ internal class TeamRepositoryImplTest : RepositoryImplTest() {
 
     private fun buildUserTeam(mail: String): UserTeam{
         return UserTeam(
-            contact = buildContact(mail)
+            contact = buildContact(mail),
+            firstName = "firtsname",
+            lastName = "lastname"
         )
     }
 
     private fun buildPlayer(mail: String): UserTeam{
         return UserTeam(
             contact = buildContact(mail),
+            firstName = "firtsName",
+            lastName = "lastName",
             playerInfo = PlayerInfo(strongFoot = PlayerFoot.BOTH, originalPosition = PlayerPosition.GK)
         )
     }
@@ -86,7 +90,7 @@ internal class TeamRepositoryImplTest : RepositoryImplTest() {
     }
 
     private fun buildContact(mail: String): Contact {
-        return Contact(mail, "firtsname", "lastname")
+        return Contact(mail)
     }
 
 

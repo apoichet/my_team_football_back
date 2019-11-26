@@ -1,14 +1,12 @@
 package com.myteam.infra
 
-import com.myteam.core.domain.Contact
-import com.myteam.core.domain.Team
-import com.myteam.core.domain.User
+import com.myteam.core.domain.*
 
 interface UserRepository {
 
     fun findByMail(mail: String): User?
 
-    fun updateContact(userToModified: User, newContact: Contact): User
+    fun updateProfile(userToModified: User, newProfile: UserTeam): User
 
     fun updatePassword(userToModified: User, newPassword: String): User
 

@@ -12,6 +12,8 @@ class User(
 )
 
 class UserTeam(
+    var firstName: String,
+    var lastName: String,
     var contact: Contact,
     var bestQuality: String = "",
     var worstDefault: String = "",
@@ -30,8 +32,6 @@ class PlayerInfo(
 
 class Contact(
     var mail: String,
-    var firstName: String,
-    var lastName: String,
     var phone: String = "",
     var addresses: List<Address> = emptyList()
 )

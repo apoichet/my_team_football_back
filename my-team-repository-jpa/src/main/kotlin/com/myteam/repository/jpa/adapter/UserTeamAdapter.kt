@@ -11,6 +11,8 @@ class UserTeamAdapter:
     override fun convertDomainObjectToData(domainObject: UserTeam): com.myteam.repository.jpa.entities.UserTeam {
         return com.myteam.repository.jpa.entities.UserTeam(
             id = null,
+            lastName = domainObject.lastName,
+            firstName = domainObject.firstName,
             bestQuality = domainObject.bestQuality,
             worstDefault = domainObject.worstDefault,
             verbatim = domainObject.verbatim,
@@ -22,6 +24,8 @@ class UserTeamAdapter:
 
     override fun convertDataToDomainObject(data: com.myteam.repository.jpa.entities.UserTeam): UserTeam {
         return UserTeam(
+            lastName = data.lastName,
+            firstName = data.firstName,
             bestQuality = data.bestQuality,
             worstDefault = data.worstDefault,
             verbatim = data.verbatim,

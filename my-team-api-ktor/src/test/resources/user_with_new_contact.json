@@ -3,22 +3,25 @@
         "userTeam": {
             "contact": {
                 "mail": "a.poichet@gmail.com",
-                "firstName": "Alexandre",
-                "lastName": "Poichet",
                 "phone": "",
                 "addresses": []
             },
+            "firstName": "Alexandre",
+            "lastName": "Poichet",
             "birthDate": "1970-01-01"
         },
         "password": "password",
         "teams": [],
         "creationDate": "2019-11-17T18:55:18.897"
     },
-    "newContact" : {
-        "mail": "t.poichet@gmail.com",
+    "newProfile" : {
+        "contact": {
+            "mail": "t.poichet@gmail.com",
+            "phone": "",
+            "addresses": []
+        },
         "firstName": "Tommy",
-        "lastName": "Poichet",
-        "phone": "",
-        "addresses": []
+        "lastName": "Poichet"
+
     }
 }

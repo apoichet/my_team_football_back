@@ -1,9 +1,9 @@
 {
   "password" : "password",
   "userTeam" : {
+    "firstName" : "user",
+    "lastName" : "new",
     "contact" : {
-      "firstName" : "user",
-      "lastName" : "new",
       "mail" : "new_user@gmail.com"
     }
   }

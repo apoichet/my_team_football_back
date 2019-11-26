@@ -28,13 +28,13 @@ UserRegister, UserLogin, UserProfile, UserTeamRegister{
         return userRepository.delete(user)
     }
 
-    override fun modifyContact(user: User, newContact: Contact): User? {
-        if(newContact.mail == user.userTeam.contact.mail) {
-            userRepository.findByMail(newContact.mail)?.let {
-                throw UserMailAlreadyExist("User mail ${newContact.mail} already exists")
+    override fun modifyProfile(user: User, newProfile: UserTeam): User? {
+        if(newProfile.contact.mail == user.userTeam.contact.mail) {
+            userRepository.findByMail(newProfile.contact.mail)?.let {
+                throw UserMailAlreadyExist("User mail ${newProfile.contact.mail} already exists")
             }
         }
-        return userRepository.updateContact(user, newContact)
+        return userRepository.updateProfile(user, newProfile)
     }
 
     override fun modifyPassword(user: User, newPassword: String): User? {

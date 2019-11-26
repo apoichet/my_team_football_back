@@ -1,9 +1,9 @@
 {
     "userTeam": {
+        "firstName": "Alexandre",
+        "lastName": "Poichet",
         "contact": {
             "mail": "a.poichet@gmail.com",
-            "firstName": "Alexandre",
-            "lastName": "Poichet",
             "phone": "",
             "addresses": []
         },
