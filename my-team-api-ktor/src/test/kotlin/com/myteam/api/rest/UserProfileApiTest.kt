@@ -71,7 +71,7 @@ internal class UserProfileApiTest {
         val userWithNewContactJson = this.javaClass.getResource("/user_with_new_contact.json").readText(Charsets.UTF_8)
         val userWithNewContact = mapper.readValue<ModifyContactWrapper>(userWithNewContactJson)
         val user = userWithNewContact.user
-        user.contact = userWithNewContact.newContact
+        user.userTeam.contact = userWithNewContact.newContact
         every { mockUserProfile.modifyContact(any(), any()) } returns user
         handleRequest ( HttpMethod.Patch, "/myteam/user/profile/update/contact" ) {
             addHeader("Accept", "application/json")
@@ -80,8 +80,8 @@ internal class UserProfileApiTest {
         }.apply {
             assertEquals(HttpStatusCode.OK, this.response.status())
             val userModified = mapper.readValue(this.response.content, User::class.java)
-            assertEquals(userModified.contact.mail, user.contact.mail)
-            assertEquals(userModified.contact.firstName, user.contact.firstName)
+            assertEquals(userModified.userTeam.contact.mail, user.userTeam.contact.mail)
+            assertEquals(userModified.userTeam.contact.firstName, user.userTeam.contact.firstName)
         }
     }
 
@@ -90,7 +90,7 @@ internal class UserProfileApiTest {
         val userWithNewContactJson = this.javaClass.getResource("/user_with_new_contact.json").readText(Charsets.UTF_8)
         val userWithNewContact = mapper.readValue<ModifyContactWrapper>(userWithNewContactJson)
         val user = userWithNewContact.user
-        user.contact = userWithNewContact.newContact
+        user.userTeam.contact = userWithNewContact.newContact
         every { mockUserProfile.modifyContact(any(), any()) } throws UserMailAlreadyExist("user mail already exists")
         handleRequest ( HttpMethod.Patch, "/myteam/user/profile/update/contact" ) {
             addHeader("Accept", "application/json")

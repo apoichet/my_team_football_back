@@ -1,12 +1,8 @@
 package com.myteam.repository.jpa.impl
 
-import com.myteam.core.domain.Contact
-import com.myteam.core.domain.Team
-import com.myteam.core.domain.User
-import com.myteam.infra.UserRepository
-import com.myteam.repository.jpa.adapter.ContactAdapter
-import com.myteam.repository.jpa.adapter.TeamAdapter
-import com.myteam.repository.jpa.adapter.UserAdapter
+import com.myteam.core.domain.*
+import com.myteam.infra.*
+import com.myteam.repository.jpa.adapter.*
 import javax.persistence.*
 
 class UserRepositoryImpl(val em: EntityManager): UserRepository {
@@ -24,7 +20,7 @@ class UserRepositoryImpl(val em: EntityManager): UserRepository {
     }
 
     override fun updatePassword(userToModified: User, newPassword: String): User {
-        find(userToModified.contact.mail)?.let {
+        find(userToModified.userTeam.contact.mail)?.let {
             val userCopy = it.copy(password = newPassword)
             em.merge(userCopy)
             return userAdapater.convertDataToDomainObject(userCopy)
@@ -33,8 +29,9 @@ class UserRepositoryImpl(val em: EntityManager): UserRepository {
     }
 
     override fun updateContact(userToModified: User, newContact: Contact): User {
-        find(userToModified.contact.mail)?.let {
-            val userCopy = it.copy(contact = contactAdapter.convertDomainObjectToData(newContact))
+        find(userToModified.userTeam.contact.mail)?.let {
+            val userTeamCopy = it.userTeam.copy(contact = contactAdapter.convertDomainObjectToData(newContact))
+            val userCopy = it.copy(userTeam = userTeamCopy)
             em.merge(userCopy)
             return userAdapater.convertDataToDomainObject(userCopy)
         }
@@ -42,7 +39,7 @@ class UserRepositoryImpl(val em: EntityManager): UserRepository {
     }
 
     override fun delete(userToDelete: User): Boolean {
-        find(userToDelete.contact.mail)?.let {
+        find(userToDelete.userTeam.contact.mail)?.let {
             em.transaction.begin()
             em.remove(it)
             em.transaction.commit()
@@ -59,7 +56,7 @@ class UserRepositoryImpl(val em: EntityManager): UserRepository {
     }
 
     override fun addTeam(userWithNewTeam: User, newTeam: Team): Team {
-        find(userWithNewTeam.contact.mail)?.let {
+        find(userWithNewTeam.userTeam.contact.mail)?.let {
             val dataTeam = teamAdapter.convertDomainObjectToData(newTeam)
             val userCopy = it.copy(teams =  it.teams.plus(dataTeam))
             em.merge(userCopy)
@@ -70,7 +67,7 @@ class UserRepositoryImpl(val em: EntityManager): UserRepository {
 
 
     private fun find(mail: String): com.myteam.repository.jpa.entities.User? {
-        val query = em.createQuery("select user from User user where user.contact.mail = ?1")
+        val query = em.createQuery("select user from User user where user.userTeam.contact.mail = ?1")
         query.setParameter(1, mail)
         try {
             return query.singleResult as(com.myteam.repository.jpa.entities.User)

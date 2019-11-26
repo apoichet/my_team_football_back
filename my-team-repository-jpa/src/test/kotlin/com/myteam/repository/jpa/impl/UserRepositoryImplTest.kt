@@ -15,9 +15,9 @@ internal class UserRepositoryImplTest: RepositoryImplTest() {
         val newUser = buildUser("mail", "mdp")
         //When
         val userCreated = sut.create(newUser)
-        val userFound = sut.findByMail(userCreated.contact.mail)
+        val userFound = sut.findByMail(userCreated.userTeam.contact.mail)
         //Then
-        assertEquals(userFound?.contact?.mail, userCreated.contact.mail)
+        assertEquals(userFound?.userTeam?.contact?.mail, userCreated.userTeam.contact.mail)
     }
 
     @Test
@@ -25,7 +25,7 @@ internal class UserRepositoryImplTest: RepositoryImplTest() {
         //Given
         val userUnknown = buildUser("unknown_mail", "mdp")
         //When
-        val userFound = sut.findByMail(userUnknown.contact.mail)
+        val userFound = sut.findByMail(userUnknown.userTeam.contact.mail)
         //Then
         assertNull(userFound)
     }
@@ -38,7 +38,7 @@ internal class UserRepositoryImplTest: RepositoryImplTest() {
         sut.create(newUser)
         val userUpdated = sut.updateContact(newUser,  buildContact("new_mail"))
         //Then
-        assertEquals(userUpdated.contact.mail, "new_mail")
+        assertEquals(userUpdated.userTeam.contact.mail, "new_mail")
     }
 
     @Test
@@ -59,7 +59,7 @@ internal class UserRepositoryImplTest: RepositoryImplTest() {
         val address1 = buildAddress("2 rue Pleyel")
         val address2 = buildAddress("3 rue du stade")
         val addresses = listOf(address1, address2)
-        newUser.contact.addresses = addresses
+        newUser.userTeam.contact.addresses = addresses
         val userToModified = sut.create(newUser)
         //When
         val newContact = buildContact("mail4")
@@ -67,7 +67,7 @@ internal class UserRepositoryImplTest: RepositoryImplTest() {
         newContact.addresses = addresses
         val userUpdated = sut.updateContact(userToModified, newContact)
         //Then
-        assertEquals(userUpdated.contact.addresses.first().address, "3 rue Piochet")
+        assertEquals(userUpdated.userTeam.contact.addresses.first().address, "3 rue Piochet")
     }
 
     @Test
@@ -88,7 +88,7 @@ internal class UserRepositoryImplTest: RepositoryImplTest() {
         val address1 = buildAddress("2 rue Pleyel")
         val address2 = buildAddress("3 rue du stade")
         val addresses = listOf(address1, address2)
-        newUser.contact.addresses = addresses
+        newUser.userTeam.contact.addresses = addresses
         //When
         val userCreated = sut.create(newUser)
         val deleted = sut.delete(userCreated)
@@ -120,7 +120,7 @@ internal class UserRepositoryImplTest: RepositoryImplTest() {
 
     private fun buildUser(mail: String, password: String): User {
         return User(
-            contact = buildContact(mail),
+            userTeam = buildUserTeam(mail),
             password = password
         )
     }
@@ -130,13 +130,13 @@ internal class UserRepositoryImplTest: RepositoryImplTest() {
             token = token,
             season = "season",
             name = "name",
-            president = buildTeamMember(mailPresident),
+            president = buildUserTeam(mailPresident),
             homeStadium = buildStadium()
         )
     }
 
-    private fun buildTeamMember(mail: String): TeamMember{
-        return TeamMember(
+    private fun buildUserTeam(mail: String): UserTeam{
+        return UserTeam(
             contact = buildContact(mail)
         )
     }

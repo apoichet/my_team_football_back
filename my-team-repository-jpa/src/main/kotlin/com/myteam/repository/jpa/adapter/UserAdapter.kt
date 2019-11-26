@@ -1,19 +1,19 @@
 package com.myteam.repository.jpa.adapter
 
-import com.myteam.core.domain.User
+import com.myteam.core.domain.*
 
 class UserAdapter:
     RepositoryAdapter<User, com.myteam.repository.jpa.entities.User> {
 
-    private val contactAdapter = ContactAdapter()
     private val teamAdapter = TeamAdapter()
+    private val userTeamAdapter = UserTeamAdapter()
 
     override fun convertDomainObjectToData(domainObject: User): com.myteam.repository.jpa.entities.User {
         return com.myteam.repository.jpa.entities.User(
             id = null,
             password = domainObject.password,
             creationDate = domainObject.creationDate,
-            contact = contactAdapter.convertDomainObjectToData(domainObject.contact),
+            userTeam = userTeamAdapter.convertDomainObjectToData(domainObject.userTeam),
             teams = domainObject.teams.map { t -> teamAdapter.convertDomainObjectToData(t) }
         )
     }
@@ -22,7 +22,7 @@ class UserAdapter:
         return User(
             password = data.password,
             creationDate = data.creationDate,
-            contact = contactAdapter.convertDataToDomainObject(data.contact),
+            userTeam = userTeamAdapter.convertDataToDomainObject(data.userTeam),
             teams = data.teams.map { t -> teamAdapter.convertDataToDomainObject(t) }
         )
     }

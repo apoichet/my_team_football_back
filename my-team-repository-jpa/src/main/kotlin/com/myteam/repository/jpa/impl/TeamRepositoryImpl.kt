@@ -1,11 +1,9 @@
 package com.myteam.repository.jpa.impl
 
-import com.myteam.core.domain.Player
-import com.myteam.core.domain.Team
-import com.myteam.infra.TeamRepository
-import com.myteam.repository.jpa.adapter.TeamAdapter
-import java.lang.IllegalStateException
-import javax.persistence.EntityManager
+import com.myteam.core.domain.*
+import com.myteam.infra.*
+import com.myteam.repository.jpa.adapter.*
+import javax.persistence.*
 
 class TeamRepositoryImpl(val em: EntityManager) : TeamRepository {
 
@@ -19,7 +17,7 @@ class TeamRepositoryImpl(val em: EntityManager) : TeamRepository {
        return null
     }
 
-    override fun addPlayer(team: Team, player: Player): Team {
+    override fun addPlayer(team: Team, player: UserTeam): Team {
         findByToken(team.token)?.let {
             team.players = team.players.plus(player)
             val data = teamAdapter.convertDomainObjectToData(team)

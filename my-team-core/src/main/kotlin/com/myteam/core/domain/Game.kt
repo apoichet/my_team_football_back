@@ -9,14 +9,14 @@ class Game(
     var place: GamePlace,
     var startGame: LocalDateTime,
     var rendezVous: LocalDateTime? = null,
-    var nbrGoalTeam: Int = 0,
-    var nbrGoalOpponent: Int = 0,
-    var addressStadium: Address,
-    var gamePlayers: List<PlayerGame> = emptyList()
+    var nbGoalTeam: Int = 0,
+    var nbGoalOpponent: Int = 0,
+    var stadium: Stadium,
+    var gamePlayers: List<GamePlayer> = emptyList()
 )
 
-class PlayerGame(
-    val player: Player,
+class GamePlayer(
+    val player: UserTeam,
     var state: PlayerGameState = PlayerGameState.ABSENT,
     var arriving: LocalDateTime,
     var goals: List<Goal> = emptyList(),
@@ -26,7 +26,7 @@ class PlayerGame(
     var minuteReferee: Int = 0,
     var coachRate: Int = 5,
     var positions: List<PlayerPosition> = emptyList()
-    )
+)
 
 class Goal(var member: GoalMember,
            var type: GoalType

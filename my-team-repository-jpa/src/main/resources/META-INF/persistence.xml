@@ -12,13 +12,17 @@
         <class>com.myteam.repository.jpa.entities.Contact</class>
         <class>com.myteam.repository.jpa.entities.User</class>
         <class>com.myteam.repository.jpa.entities.Team</class>
-        <class>com.myteam.repository.jpa.entities.TeamMember</class>
+        <class>com.myteam.repository.jpa.entities.UserTeam</class>
         <class>com.myteam.repository.jpa.entities.PlayerPosition</class>
-        <class>com.myteam.repository.jpa.entities.PlayerContribution</class>
+        <class>com.myteam.repository.jpa.entities.UserTeamContribution</class>
         <class>com.myteam.repository.jpa.entities.Stadium</class>
         <class>com.myteam.repository.jpa.entities.Color</class>
         <class>com.myteam.repository.jpa.entities.Picture</class>
         <class>com.myteam.repository.jpa.entities.Rib</class>
+        <class>com.myteam.repository.jpa.entities.PlayerInfo</class>
+        <class>com.myteam.repository.jpa.entities.Game</class>
+        <class>com.myteam.repository.jpa.entities.GamePlayer</class>
+        <class>com.myteam.repository.jpa.entities.Goal</class>
 
         <properties>
             <property name="javax.persistence.data-base-product-name" value="H2"/>
@@ -41,13 +45,17 @@
         <class>com.myteam.repository.jpa.entities.Contact</class>
         <class>com.myteam.repository.jpa.entities.User</class>
         <class>com.myteam.repository.jpa.entities.Team</class>
-        <class>com.myteam.repository.jpa.entities.TeamMember</class>
+        <class>com.myteam.repository.jpa.entities.UserTeam</class>
         <class>com.myteam.repository.jpa.entities.PlayerPosition</class>
-        <class>com.myteam.repository.jpa.entities.PlayerContribution</class>
+        <class>com.myteam.repository.jpa.entities.UserTeamContribution</class>
         <class>com.myteam.repository.jpa.entities.Stadium</class>
         <class>com.myteam.repository.jpa.entities.Color</class>
         <class>com.myteam.repository.jpa.entities.Picture</class>
         <class>com.myteam.repository.jpa.entities.Rib</class>
+        <class>com.myteam.repository.jpa.entities.PlayerInfo</class>
+        <class>com.myteam.repository.jpa.entities.Game</class>
+        <class>com.myteam.repository.jpa.entities.GamePlayer</class>
+        <class>com.myteam.repository.jpa.entities.Goal</class>
 
         <properties>
             <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />

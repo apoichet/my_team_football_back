@@ -1,10 +1,9 @@
 package com.myteam.repository.jpa.impl
 
 import com.myteam.core.domain.*
-import com.myteam.core.enums.PlayerFoot
-import com.myteam.core.enums.PlayerPosition
-import com.myteam.repository.jpa.adapter.TeamAdapter
-import org.junit.jupiter.api.Test
+import com.myteam.core.enums.*
+import com.myteam.repository.jpa.adapter.*
+import org.junit.jupiter.api.*
 import org.junit.jupiter.api.Assertions.*
 
 internal class TeamRepositoryImplTest : RepositoryImplTest() {
@@ -60,22 +59,21 @@ internal class TeamRepositoryImplTest : RepositoryImplTest() {
             token = token,
             season = "season",
             name = "name",
-            president = buildTeamMember(mailPresident),
+            president = buildUserTeam(mailPresident),
             homeStadium = buildStadium()
         )
     }
 
-    private fun buildTeamMember(mail: String): TeamMember{
-        return TeamMember(
+    private fun buildUserTeam(mail: String): UserTeam{
+        return UserTeam(
             contact = buildContact(mail)
         )
     }
 
-    private fun buildPlayer(mail: String): Player{
-        return Player(
+    private fun buildPlayer(mail: String): UserTeam{
+        return UserTeam(
             contact = buildContact(mail),
-            originalPosition = PlayerPosition.GK,
-            strongFoot = PlayerFoot.RIGHT
+            playerInfo = PlayerInfo(strongFoot = PlayerFoot.BOTH, originalPosition = PlayerPosition.GK)
         )
     }
 

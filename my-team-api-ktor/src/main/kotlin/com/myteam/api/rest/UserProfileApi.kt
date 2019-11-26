@@ -17,7 +17,7 @@ fun Route.userProfile(logger: Logger, userProfile: UserProfile?) {
         delete("close") {
             val user = call.receive<User>()
             if(userProfile!!.closeAccount(user)) {
-                logger.info("Close user account with mail '${user.contact.mail}'")
+                logger.info("Close user account with mail '${user.userTeam.contact.mail}'")
                 call.respond(HttpStatusCode.OK)
             }
             else {
@@ -30,7 +30,7 @@ fun Route.userProfile(logger: Logger, userProfile: UserProfile?) {
             patch("password") {
                 val receive = call.receive<ModifyPasswordWrapper>()
                 userProfile!!.modifyPassword(receive.user, receive.newPassword)?.let {
-                    logger.info("User with mail '${receive.user.contact.mail}' modify password")
+                    logger.info("User with mail '${receive.user.userTeam.contact.mail}' modify password")
                     call.respond(HttpStatusCode.OK, it)
                 }
             }
@@ -39,7 +39,7 @@ fun Route.userProfile(logger: Logger, userProfile: UserProfile?) {
                 val receive = call.receive<ModifyContactWrapper>()
                 try {
                     userProfile!!.modifyContact(receive.user, receive.newContact)?.let {
-                        logger.info("User with mail '${receive.user.contact.mail}' modify contact")
+                        logger.info("User with mail '${receive.user.userTeam.contact.mail}' modify contact")
                         call.respond(HttpStatusCode.OK, it)
                     }
                 }

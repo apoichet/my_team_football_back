@@ -1,6 +1,6 @@
 package com.myteam.repository.jpa.entities
 
-import java.time.LocalDateTime
+import java.time.*
 import javax.persistence.*
 
 @Entity
@@ -27,10 +27,10 @@ data class Team (
     val licenceAmount: Float,
 
     @OneToOne
-    val president: TeamMember,
+    val president: UserTeam,
 
     @OneToOne
-    val coach: TeamMember?,
+    val coach: UserTeam?,
 
     @OneToOne
     val homeStadium: Stadium,
@@ -46,6 +46,14 @@ data class Team (
 
     @OneToMany
     @JoinColumn
-    val players: Collection<TeamMember>
+    val players: Collection<UserTeam>,
+
+    @OneToMany
+    @JoinColumn
+    val games: Collection<Game>,
+
+    @OneToMany
+    @JoinColumn
+    val contributions: Collection<UserTeamContribution>
 
 )

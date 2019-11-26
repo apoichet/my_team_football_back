@@ -1,22 +1,17 @@
 package com.myteam.core.usecase
 
 import com.myteam.application.*
-import com.myteam.core.domain.Contact
-import com.myteam.core.domain.Player
-import com.myteam.core.domain.Team
-import com.myteam.core.domain.User
-import com.myteam.core.exception.TeamAlreadyExists
-import com.myteam.core.exception.UserMailAlreadyExist
-import com.myteam.infra.TeamRepository
-import com.myteam.infra.UserRepository
+import com.myteam.core.domain.*
+import com.myteam.core.exception.*
+import com.myteam.infra.*
 
 class UserAccount(private val userRepository: UserRepository,
                   private val teamRepository: TeamRepository) :
 UserRegister, UserLogin, UserProfile, UserTeamRegister{
 
     override fun createAccount(newUser: User): User? {
-        userRepository.findByMail(newUser.contact.mail)?.let {
-            throw UserMailAlreadyExist("User mail ${newUser.contact.mail} already exists")
+        userRepository.findByMail(newUser.userTeam.contact.mail)?.let {
+            throw UserMailAlreadyExist("User mail ${newUser.userTeam.contact.mail} already exists")
         } ?: run {
             return userRepository.create(newUser)
         }
@@ -34,7 +29,7 @@ UserRegister, UserLogin, UserProfile, UserTeamRegister{
     }
 
     override fun modifyContact(user: User, newContact: Contact): User? {
-        if(newContact.mail == user.contact.mail) {
+        if(newContact.mail == user.userTeam.contact.mail) {
             userRepository.findByMail(newContact.mail)?.let {
                 throw UserMailAlreadyExist("User mail ${newContact.mail} already exists")
             }
@@ -55,7 +50,7 @@ UserRegister, UserLogin, UserProfile, UserTeamRegister{
             it.name === newTeam.name && it.season === newTeam.season
         } > 0
         if (teamAlreadyExists) {
-            throw TeamAlreadyExists("User ${user.contact.mail} " +
+            throw TeamAlreadyExists("User ${user.userTeam.contact.mail} " +
                     "has already created a team with name ${newTeam.name} and season " +
                     newTeam.season
             )
@@ -64,7 +59,7 @@ UserRegister, UserLogin, UserProfile, UserTeamRegister{
     }
 
 
-    override fun joinTeam(team: Team, player: Player): Team? {
+    override fun joinTeam(team: Team, player: UserTeam): Team? {
         return teamRepository.addPlayer(team, player)
     }
 

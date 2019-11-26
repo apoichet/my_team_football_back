@@ -1,6 +1,5 @@
 package com.myteam.repository.jpa.entities
 
-import java.time.LocalDate
 import javax.persistence.*
 
 @Entity
@@ -18,9 +17,6 @@ data class Contact(
 
     @Column(nullable = false, name = "last_name")
     val lastName: String,
-
-    @Column(nullable = false, name = "birth_date")
-    val birthDate: LocalDate,
 
     @Column(nullable = false, name = "phone_number")
     val phoneNumber: String,

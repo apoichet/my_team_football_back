@@ -1,8 +1,10 @@
 {
   "password" : "password",
-  "contact" : {
-    "firstName" : "user",
-    "lastName" : "new",
-    "mail" : "new_user@gmail.com"
+  "userTeam" : {
+    "contact" : {
+      "firstName" : "user",
+      "lastName" : "new",
+      "mail" : "new_user@gmail.com"
+    }
   }
 }

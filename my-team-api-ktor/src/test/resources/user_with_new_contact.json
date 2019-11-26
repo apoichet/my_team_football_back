@@ -1,12 +1,14 @@
 {
-    "user" : {
-        "contact": {
-            "mail": "a.poichet@gmail.com",
-            "firstName": "Alexandre",
-            "lastName": "Poichet",
-            "birthDate": "1970-01-01",
-            "phone": "",
-            "addresses": []
+    "user": {
+        "userTeam": {
+            "contact": {
+                "mail": "a.poichet@gmail.com",
+                "firstName": "Alexandre",
+                "lastName": "Poichet",
+                "phone": "",
+                "addresses": []
+            },
+            "birthDate": "1970-01-01"
         },
         "password": "password",
         "teams": [],
@@ -16,7 +18,6 @@
         "mail": "t.poichet@gmail.com",
         "firstName": "Tommy",
         "lastName": "Poichet",
-        "birthDate": "1970-01-01",
         "phone": "",
         "addresses": []
     }

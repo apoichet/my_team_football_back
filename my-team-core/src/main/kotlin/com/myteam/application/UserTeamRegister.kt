@@ -1,8 +1,6 @@
 package com.myteam.application
 
-import com.myteam.core.domain.Player
-import com.myteam.core.domain.Team
-import com.myteam.core.domain.User
+import com.myteam.core.domain.*
 
 interface UserTeamRegister {
 
@@ -10,6 +8,6 @@ interface UserTeamRegister {
 
     fun findTeamByToken(token: String): Team?
 
-    fun joinTeam(team: Team, player: Player): Team?
+    fun joinTeam(team: Team, player: UserTeam): Team?
 
 }

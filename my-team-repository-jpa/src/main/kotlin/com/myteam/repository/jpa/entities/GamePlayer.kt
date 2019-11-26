@@ -1,6 +1,6 @@
 package com.myteam.repository.jpa.entities
 
-import java.time.LocalDateTime
+import java.time.*
 import javax.persistence.*
 
 @Entity
@@ -9,7 +9,7 @@ data class GamePlayer (
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    val id: Int = 0,
+    val id: Int?,
 
     @Column(nullable = true)
     val state: String,
@@ -32,9 +32,12 @@ data class GamePlayer (
     @Column(nullable = true, name = "coach_rate")
     val coachRate: Int,
 
+    @OneToOne
+    val player: UserTeam,
+
     @OneToMany
     @JoinColumn
-    val positions: Collection<String>,
+    val positions: Collection<PlayerPosition>,
 
     @OneToMany
     @JoinColumn

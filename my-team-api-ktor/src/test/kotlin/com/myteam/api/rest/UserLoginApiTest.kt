@@ -23,7 +23,7 @@ internal class UserLoginApiTest {
 
     @Test
     fun `should respond 200 with user login`() = testApp {
-        val existingUser = User(password = "password", contact = Contact(firstName = "firstName", lastName = "lastName", mail = "mail"))
+        val existingUser = User(password = "password", userTeam =  UserTeam(contact = Contact(firstName = "firstName", lastName = "lastName", mail = "mail")))
         every { mockUserLogin.loginUser(any(), any()) } returns existingUser
         handleRequest ( HttpMethod.Post, "/myteam/user/login" ) {
             addHeader("Accept", "application/json")
@@ -32,7 +32,7 @@ internal class UserLoginApiTest {
         }.apply {
             assertEquals(HttpStatusCode.OK, this.response.status())
             val userLog = mapper.readValue(this.response.content, User::class.java)
-            assertEquals("mail", userLog.contact.mail)
+            assertEquals("mail", userLog.userTeam.contact.mail)
         }
     }
 

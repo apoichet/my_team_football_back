@@ -8,7 +8,7 @@ data class Game (
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    val id: Int = 0,
+    val id: Int?,
 
     @Column(nullable = false, name = "name_opponent")
     val nameOpponent: String,
@@ -23,7 +23,7 @@ data class Game (
     val start: LocalDateTime,
 
     @Column(nullable = true, name = "rendez_vous")
-    val rendezVous: LocalDateTime,
+    val rendezVous: LocalDateTime?,
 
     @Column(nullable = false, name = "nb_goal_team")
     val nbGoalTeam: Int,
@@ -32,7 +32,7 @@ data class Game (
     val nbrGoalOpponent: Int,
 
     @OneToOne
-    val addressStadium: Address,
+    val stadium: Stadium,
 
     @OneToMany
     @JoinColumn

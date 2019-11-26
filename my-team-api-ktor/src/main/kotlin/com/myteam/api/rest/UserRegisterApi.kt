@@ -20,7 +20,7 @@ fun Route.userRegister(logger: Logger, userRegister: UserRegister?) {
         val newUser = call.receive<User>()
         try {
             userRegister!!.createAccount(newUser)?.let {
-                logger.info("User ${newUser.contact.mail} created with success")
+                logger.info("User ${newUser.userTeam.contact.mail} created with success")
                 call.respond(HttpStatusCode.Created, it)
             } ?: call.respond(HttpStatusCode.Accepted)
         }

@@ -4,16 +4,19 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "player_contribution")
-data class PlayerContribution (
+data class UserTeamContribution (
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    val id: Int = 0,
+    val id: Int?,
 
     @Column(nullable = false)
     val amount: Float,
 
     @Column(nullable = false)
-    val type: String
+    val paymentType: String,
+
+    @OneToOne
+    val userTeam: UserTeam
 
 )

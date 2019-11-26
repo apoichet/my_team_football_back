@@ -108,13 +108,13 @@ internal class UserAccountTest {
         val existingUser = buildUser("mail", "password")
         val contactModified = buildContact("new_mail")
         val userModified = buildUser("new_mail", "password")
-        userModified.contact = contactModified
+        userModified.userTeam.contact = contactModified
         //When
         whenever(mockUserRepo.updateContact(existingUser, contactModified)).thenReturn(userModified)
         val userReturn = sut.modifyContact(existingUser, contactModified)
         //Then
         verify(mockUserRepo).updateContact(existingUser, contactModified)
-        assertEquals(contactModified, userReturn?.contact)
+        assertEquals(contactModified, userReturn?.userTeam?.contact)
     }
 
     @Test
@@ -202,9 +202,25 @@ internal class UserAccountTest {
         return Contact(mail, "firstname", "lastname")
     }
 
+    private fun buildUserTeam(mail: String): UserTeam {
+        return UserTeam(
+            contact = buildContact(mail)
+        )
+    }
+
+    private fun buildPlayer(mail : String): UserTeam {
+        return UserTeam(
+            contact = buildContact(mail),
+            playerInfo = PlayerInfo(
+                strongFoot = PlayerFoot.BOTH,
+                originalPosition = PlayerPosition.GK)
+        )
+
+    }
+
     private fun buildUser(mail: String, password: String): User {
         return User(
-            contact = buildContact(mail),
+            userTeam = buildUserTeam(mail),
             password = password
         )
     }
@@ -217,23 +233,8 @@ internal class UserAccountTest {
             creationDate = LocalDateTime.now(),
             licenceAmount = 0.0f,
             homeStadium = Stadium("name", Address("", "", "")),
-            president = buildTeamMember("mail")
+            president = buildUserTeam("mail")
         )
-    }
-
-    private fun buildPlayer(mail : String): Player {
-        return Player(
-            contact = buildContact(mail),
-            strongFoot = PlayerFoot.BOTH,
-            positions = emptyList(),
-            originalPosition = PlayerPosition.GK
-        )
-
-    }
-
-    private fun buildTeamMember(mail: String): TeamMember {
-        return TeamMember(contact = buildContact(mail))
-
     }
 
 }

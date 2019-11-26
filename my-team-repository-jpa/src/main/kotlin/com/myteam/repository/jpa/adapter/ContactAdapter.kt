@@ -13,7 +13,6 @@ class ContactAdapter: RepositoryAdapter<Contact, com.myteam.repository.jpa.entit
             lastName = domainObject.lastName,
             firstName = domainObject.firstName,
             phoneNumber = domainObject.phone,
-            birthDate = domainObject.birthDate,
             addresses = domainObject.addresses.map { a ->  addressAdapter.convertDomainObjectToData(a)}
         )
     }
@@ -24,7 +23,6 @@ class ContactAdapter: RepositoryAdapter<Contact, com.myteam.repository.jpa.entit
             lastName = data.lastName,
             firstName = data.firstName,
             phone = data.phoneNumber,
-            birthDate = data.birthDate,
             addresses = data.addresses.map { a ->  addressAdapter.convertDataToDomainObject(a)}
         )
     }

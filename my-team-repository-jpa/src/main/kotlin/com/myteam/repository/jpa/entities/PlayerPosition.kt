@@ -13,5 +13,4 @@ data class PlayerPosition (
     @Column(nullable = false)
     val position: String
 
-
 )
